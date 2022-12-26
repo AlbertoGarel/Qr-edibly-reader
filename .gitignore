@@ -1,4 +1,6 @@
 # Logs
+.expo
+.idea
 logs
 *.log
 npm-debug.log*
