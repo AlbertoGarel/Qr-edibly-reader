@@ -1,18 +1,19 @@
-import {StyleSheet, View, Text, Pressable } from 'react-native';
+import {StyleSheet, View, Text, Pressable, Button } from 'react-native';
 import {connect} from "react-redux";
 import {AppState, UserListState} from "../store/types";
 import {addUser} from "../store/user-list/actions";
 import {Dispatch} from "redux";
 
 type Props = {
+    navigation?: any,
     users: UserListState,
     onAddUser: (name: string, surename: string, age: number) => void;
 }
 
-const Prueba = ({users, onAddUser}: Props) => {
+const Prueba = ({users, onAddUser, navigation}: Props) => {
 
     return (
-        <View>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'blue'}}>
             <Pressable style={styles.button} onPress={() => onAddUser('Antonio', 'Gutierrez', 50)}>
                 <Text style={styles.text}>Press to add</Text>
             </Pressable >
@@ -25,6 +26,7 @@ const Prueba = ({users, onAddUser}: Props) => {
                         <Text>no hay personas</Text>
 
                 }
+            <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
         </View>
     )
 };
