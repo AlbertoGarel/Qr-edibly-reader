@@ -1,5 +1,6 @@
 
 # Logs
+app.config.ts
 .expo
 .idea
 logs

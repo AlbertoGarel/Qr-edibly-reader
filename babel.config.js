@@ -15,7 +15,8 @@ module.exports = (api) => {
                 "safe": false,
                 "allowUndefined": true,
                 "verbose": false
-            }]
+            }],
+            ['transform-inline-environment-variables']
         ]
     };
 };
