@@ -1,5 +1,7 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 import {userList} from './user-list/reducer';
+import {usedTheme} from './themes/reducer';
+import {usedSettings} from './settings/reducer';
 import {AppState} from "./types";
 import {configureStore} from "@reduxjs/toolkit";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -21,7 +23,9 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers<AppState>({
-    userList
+    userList,
+    usedTheme,
+    usedSettings
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
