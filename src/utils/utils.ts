@@ -1,7 +1,10 @@
-import Clipboard from '@react-native-clipboard/clipboard';
-import {Vibration} from 'react-native';
-import {ONE_SECOND_IN_MS} from "../constants/expoConstants";
-import {Audio} from 'expo-av';
+import Clipboard from "@react-native-clipboard/clipboard";
+import { Vibration } from "react-native";
+import { ONE_SECOND_IN_MS } from "../constants/expoConstants";
+import { Audio } from "expo-av";
+import { useEffect } from "react";
+import i18n from "../translate";
+import * as Localization from "expo-localization";
 
 /**
  *  Set audio next or back
@@ -22,7 +25,7 @@ import {Audio} from 'expo-av';
  *
  **/
 function simpleVibrated(time: number) {
-    Vibration.vibrate(time * ONE_SECOND_IN_MS);
+  Vibration.vibrate(time * ONE_SECOND_IN_MS);
 }
 
 /**
@@ -34,7 +37,7 @@ function simpleVibrated(time: number) {
  *
  **/
 async function copyToClipboard(copyStr: string) {
-    Clipboard.setString(copyStr);
+  Clipboard.setString(copyStr);
 };
 
 /**
@@ -44,7 +47,7 @@ async function copyToClipboard(copyStr: string) {
  *
  **/
 async function fetchCopiedText() {
-    return await Clipboard.getString();
+  return await Clipboard.getString();
 };
 
 /**
@@ -53,18 +56,19 @@ async function fetchCopiedText() {
  *
  **/
 async function _getContent() {
-    return await Clipboard.getImage();
+  return await Clipboard.getImage();
 }
+
 /**
  *
- *  Get content of image in base64 string type
  *
- **/
+ *
+ * */
 
 export {
-    // playSound,
-    simpleVibrated,
-    copyToClipboard,
-    fetchCopiedText,
-    _getContent
-}
+  // playSound,
+  simpleVibrated,
+  copyToClipboard,
+  fetchCopiedText,
+  _getContent
+};

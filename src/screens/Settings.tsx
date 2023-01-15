@@ -8,6 +8,7 @@ import {AppState, SettingsInUseState} from "../store/types";
 import {Dispatch} from "redux";
 import {addTheme} from "../store/themes/actions";
 import {addSettings} from "../store/settings/action";
+import i18n from "../translate";
 
 type Props = {
     selectedSettings: SettingsInUseState,
@@ -32,7 +33,7 @@ const Settings = ({onAddSettings, selectedSettings}: Props) => {
                 id: 'options-buttonVibration',
                 itemData: [
                     {
-                        title: 'Vibración de botón',
+                        title: "contextual.vibration_button",// i18n key
                         value: settings[0].buttonVibration,
                         action: {buttonVibration: !settings[0].buttonVibration},
                         predefValue: true
@@ -43,7 +44,7 @@ const Settings = ({onAddSettings, selectedSettings}: Props) => {
                 id: 'options-buttonSound',
                 itemData: [
                     {
-                        title: 'Sonido de botón',
+                        title: 'contextual.sound_button',
                         value: settings[0].buttonSound,
                         action: {buttonSound: !settings[0].buttonSound},
                         predefValue: false
@@ -54,7 +55,7 @@ const Settings = ({onAddSettings, selectedSettings}: Props) => {
                 id: 'options-scanVibration',
                 itemData: [
                     {
-                        title: 'Vibración al escanear',
+                        title: 'contextual.scan_vibration',
                         value: settings[0].scannerVibration,
                         action: {scannerVibration: !settings[0].scannerVibration},
                         predefValue: false
@@ -65,7 +66,7 @@ const Settings = ({onAddSettings, selectedSettings}: Props) => {
                 id: 'options-scanSound',
                 itemData: [
                     {
-                        title: 'Sonido al escanear',
+                        title: 'contextual.scan_sound',
                         value: settings[0].scannerSound,
                         action: {scannerSound: !settings[0].scannerSound},
                         predefValue: false
@@ -76,7 +77,7 @@ const Settings = ({onAddSettings, selectedSettings}: Props) => {
                 id: 'options-frontCamera',
                 itemData: [
                     {
-                        title: 'Cámara delantera',
+                        title: 'contextual.front_camera',
                         value: settings[0].camera,
                         action: {camera: 1},
                         predefValue: 1
@@ -87,7 +88,7 @@ const Settings = ({onAddSettings, selectedSettings}: Props) => {
                 id: 'options-rearCamera',
                 itemData: [
                     {
-                        title: 'Cámara trasera',
+                        title: 'contextual.rear_camera',
                         value: settings[0].camera,
                         action: {camera: 0},
                         predefValue: 0
@@ -99,7 +100,7 @@ const Settings = ({onAddSettings, selectedSettings}: Props) => {
                 itemData: [
                     {
 
-                        title: 'Añadir a Historial',
+                        title: 'contextual.add_history',
                         action: {history: !settings[0].history},
                         value: settings[0].history,
                         predefValue: true
@@ -142,7 +143,7 @@ const Settings = ({onAddSettings, selectedSettings}: Props) => {
                 case 'themes':
                     return (
                         <View style={[styles.fullwidth, {padding: padding}]}>
-                            <Text style={{...styles.blockSchemaColors, color: colors.text}}>Temas:</Text>
+                            <Text style={{...styles.blockSchemaColors, color: colors.text}}>{i18n.t("generic.themes")}:</Text>
                             <View style={[styles_sheet.rowWrap, styles.fullwidth]}>
                                 {SchemeColors(item)}
                             </View>
@@ -158,7 +159,7 @@ const Settings = ({onAddSettings, selectedSettings}: Props) => {
                                 <Text style={{
                                     ...styles.listableItemsText,
                                     color: colors.text
-                                }}>{item.itemData[0].title}</Text>
+                                }}>{i18n.t(item.itemData[0].title)}</Text>
                                 {SchemeColors(item)}
                             </View>
                         </TouchableHighlight>
@@ -174,7 +175,7 @@ const Settings = ({onAddSettings, selectedSettings}: Props) => {
             <View style={{flex: 1}}>
                 <FlatList
                     data={DATA}
-                    keyExtractor={(item, index) => index.toString()}
+                    keyExtractor={(item, index) => item.id + index}
                     renderItem={renderItems}
                 />
             </View>

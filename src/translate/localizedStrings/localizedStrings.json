@@ -1,0 +1,41 @@
+{
+  "es-ES": {
+    "generic": {
+      "poweredBy": "desarrollado por",
+      "themes": "Temas",
+      "type": "Tipo",
+      "date": "Fecha",
+      "state": "Estado"
+    },
+    "contextual": {
+      "vibration_button": "Vibración de botón",
+      "sound_button": "Button sound",
+      "scan_vibration": "Vibración al escanear",
+      "scan_sound": "Sonido al escanear",
+      "front_camera": "Cámara delantera",
+      "rear_camera": "Cámara trasera",
+      "add_history": "Añadir a Historial",
+      "last_search": "Última búsqueda"
+    }
+  },
+  "en-EN": {
+    "generic": {
+      "poweredBy": "powered by",
+      "themes": "Themes",
+      "type": "Type",
+      "date": "Date",
+      "state": "State"
+    },
+    "contextual": {
+      "vibration_button": "Button vibration",
+      "sound_button": "Button sound",
+      "scan_vibration": "Vibration when scanning",
+      "scan_sound": "Sound when scanning",
+      "front_camera": "Front camera",
+      "rear_camera": "Rear camera",
+      "add_history": "Add to History",
+      "first_search": "Do your first search",
+      "last_search": "last search"
+    }
+  }
+}

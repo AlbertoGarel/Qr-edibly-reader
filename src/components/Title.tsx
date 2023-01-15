@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import * as Font from "expo-font";
 import {styles_sheet} from "../constants/styles_sheet";
 import {useTheme} from '@react-navigation/native';
+import i18n from '../translate'
 
 type Props = {
     title: string,
@@ -16,7 +17,7 @@ const Title = ({title, isDark}: Props) => {
 
     return (
         <>
-            <Text style={{color: colors.text, fontFamily: 'Sniglet'}}>{title}</Text>
+            <Text style={{color: colors.text, fontFamily: 'Sniglet'}}>{i18n.t('generic.poweredBy')}</Text>
             <Image source={
                 dark ?
                     require('../assets/images/socialPymes_Imagotipo_blanco.png')
