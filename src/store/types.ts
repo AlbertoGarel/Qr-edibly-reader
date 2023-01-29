@@ -6,7 +6,7 @@ export type Settings = {
     buttonSound: boolean,
     scannerVibration: boolean,
     scannerSound: boolean,
-    camera: number,
+    camera: string,
     history: boolean,
     openAutoURL: boolean,
 }

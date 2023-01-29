@@ -15,7 +15,9 @@
       "front_camera": "Cámara delantera",
       "rear_camera": "Cámara trasera",
       "add_history": "Añadir a Historial",
-      "last_search": "Última búsqueda"
+      "last_search": "Última búsqueda",
+      "grant_permission": "conceder permiso",
+      "text_permission_camera": "Necesitamos tu permiso para mostrar la cámara"
     }
   },
   "en-EN": {
@@ -35,7 +37,9 @@
       "rear_camera": "Rear camera",
       "add_history": "Add to History",
       "first_search": "Do your first search",
-      "last_search": "last search"
+      "last_search": "last search",
+      "grant_permission": "grant permission",
+      "text_permission_camera": "We need your permission to show the camera"
     }
   }
 }

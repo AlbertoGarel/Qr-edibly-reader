@@ -1,3 +1,4 @@
+
 import { Provider } from "react-redux";
 import { useEffect, useState } from "react";
 import store from "./store/store";
@@ -18,11 +19,10 @@ export function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Router />
+        <Router props={store}/>
       </PersistGate>
     </Provider>
   );
-
 };
 
 export default App;

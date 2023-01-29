@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1673636112879" clover="3.2.0">
-  <project timestamp="1673636112879" name="All files">
-    <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="0" coveredelements="0" complexity="0" loc="0" ncloc="0" packages="0" files="0" classes="0"/>
+<coverage generated="1674842503739" clover="3.2.0">
+  <project timestamp="1674842503739" name="All files">
+    <metrics statements="21" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="21" coveredelements="0" complexity="0" loc="21" ncloc="21" packages="3" files="4" classes="4"/>
+    <package name="RN_BarcodeReader">
+      <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name=".eslintrc.js" path="C:\Users\qmeli\OneDrive\Escritorio\webstorm projects\React native projects\RN_BarcodeReader\.eslintrc.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="RN_BarcodeReader.src.constants">
+      <metrics statements="13" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="expoConstants.js" path="C:\Users\qmeli\OneDrive\Escritorio\webstorm projects\React native projects\RN_BarcodeReader\src\constants\expoConstants.js">
+        <metrics statements="7" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+      </file>
+      <file name="styles_sheet.js" path="C:\Users\qmeli\OneDrive\Escritorio\webstorm projects\React native projects\RN_BarcodeReader\src\constants\styles_sheet.js">
+        <metrics statements="6" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="RN_BarcodeReader.src.translate">
+      <metrics statements="7" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="index.js" path="C:\Users\qmeli\OneDrive\Escritorio\webstorm projects\React native projects\RN_BarcodeReader\src\translate\index.js">
+        <metrics statements="7" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+      </file>
+    </package>
   </project>
 </coverage>

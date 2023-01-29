@@ -19,7 +19,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "$(APP_NAME) needs access to your Camera."
+      },
+      "bundleIdentifier": "com.albertogarel.Barcodereader"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,6 +32,7 @@
       },
       "softwareKeyboardLayoutMode": "pan",
       "permissions": [
+        "android.permission.CAMERA",
         "CAMERA",
         "CAMERA_ROLL",
         "VIBRATE",
@@ -40,7 +45,21 @@
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "$(APP_NAME) needs access to your Camera."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ]
   },
   "react-native-google-mobile-ads": {
     "android_app_id": "",

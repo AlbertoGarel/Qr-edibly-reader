@@ -8,7 +8,7 @@ export const initialState: SettingsInUseState = [{
     buttonSound: false,
     scannerVibration: false,
     scannerSound: false,
-    camera: 1,
+    camera: "back",
     history: false,
     openAutoURL: false,
 }];

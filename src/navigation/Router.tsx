@@ -1,6 +1,6 @@
 import {SafeAreaView} from "react-native";
 import AdMobBanner from "../components/AdModBanner";
-import {DefaultTheme, NavigationContainer} from "@react-navigation/native";
+import { DefaultTheme, NavigationContainer, useTheme } from "@react-navigation/native";
 import Home from "../screens/Home";
 import LogoTitle from "../components/LogoTitle";
 import Settings from "../screens/Settings";
@@ -8,9 +8,11 @@ import Prueba from "../screens/Prueba";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {connect} from "react-redux";
 import {AppState} from "../store/types";
+import CameraScanner from "../screens/CameraScanner";
 
-const Router = ({theme}) => {
+const Router = ({theme, props}) => {
     const Stack = createNativeStackNavigator();
+  const { dark, colors } = useTheme();
 
     const MyTheme = {
         ...DefaultTheme,
@@ -18,14 +20,14 @@ const Router = ({theme}) => {
     };
 
     return (
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{flex: 1,backgroundColor: colors.background}}>
             <NavigationContainer theme={MyTheme}>
                 <AdMobBanner background={MyTheme.colors.background}/>
                 <Stack.Navigator initialRouteName="inicio"
                                  screenOptions={{
                                      animation: 'slide_from_left',
                                      headerShown: false,
-                                     statusBarColor: MyTheme.colors.background
+                                     statusBarColor: MyTheme.colors.background,
                                      // headerStyle: {
                                      //     backgroundColor: '#f4511e',
                                      // },
@@ -48,12 +50,19 @@ const Router = ({theme}) => {
                                       headerTitleAlign: 'center',
                                   }}
                     />
-                    <Stack.Screen name="prueba" component={Prueba}
-                                  options={
-                                      {animation: 'slide_from_bottom'}
-                                  }
+                    <Stack.Screen name="camera" component={CameraScanner}
+                                  // options={
+                                  //     {animation: 'slide_from_bottom'}
+                                  // }
 
                     />
+                  <Stack.Screen name="prueba" component={Prueba}
+                                // initialParams={{ user: props.name }}
+                                options={
+                                  {animation: 'slide_from_bottom'}
+                                }
+
+                  />
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaView>

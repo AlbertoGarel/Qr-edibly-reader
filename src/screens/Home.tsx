@@ -14,6 +14,7 @@ import { useTheme } from "@react-navigation/native";
 import * as Font from "expo-font";
 import LastSearch from "../components/LastSearch";
 import RNpicker from "../components/RNpicker";
+import * as React from "react";
 
 
 type State = {
@@ -50,7 +51,7 @@ const Home = ({ navigation }) => {
 
   function rounded_pressable(value) {
     setPressed(value);
-    if (value === false) navigation.navigate("prueba");
+    if (value === false) navigation.navigate("camera");
   };
 
   function squares_pressable(identifier, value) {
@@ -68,7 +69,7 @@ const Home = ({ navigation }) => {
       image_src: require("../assets/images/history.png"),
       func_press: squares_pressable,
       identifier: "history",
-      press_state: squarepressed.lupa
+      press_state: squarepressed.lupa,
     },
     {
       image_src: require("../assets/images/bookmark.png"),

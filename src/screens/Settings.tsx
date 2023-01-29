@@ -79,8 +79,8 @@ const Settings = ({onAddSettings, selectedSettings}: Props) => {
                     {
                         title: 'contextual.front_camera',
                         value: settings[0].camera,
-                        action: {camera: 1},
-                        predefValue: 1
+                        action: {camera: "front"},
+                        predefValue: "front"
                     }
                 ]
             },
@@ -90,8 +90,8 @@ const Settings = ({onAddSettings, selectedSettings}: Props) => {
                     {
                         title: 'contextual.rear_camera',
                         value: settings[0].camera,
-                        action: {camera: 0},
-                        predefValue: 0
+                        action: {camera: 'back'},
+                        predefValue: 'back'
                     }
                 ]
             },
