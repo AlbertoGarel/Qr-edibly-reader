@@ -5,7 +5,13 @@
       "themes": "Temas",
       "type": "Tipo",
       "date": "Fecha",
-      "state": "Estado"
+      "state": "Estado",
+      "name": "Nombre",
+      "content": "Contenido",
+      "notListed": "No listado",
+      "listed": "Listado",
+      "notChecked": "Pendiente",
+      "noURL": "Sin URL"
     },
     "contextual": {
       "vibration_button": "Vibración de botón",
@@ -17,16 +23,31 @@
       "add_history": "Añadir a Historial",
       "last_search": "Última búsqueda",
       "grant_permission": "conceder permiso",
-      "text_permission_camera": "Necesitamos tu permiso para mostrar la cámara"
+      "text_permission_camera": "Necesitamos tu permiso para mostrar la cámara",
+      "barcode_title": "Código de barras",
+      "input_name_placeholder": "nombre personalizado",
+      "drawer_text": "Opciones para valores",
+      "ErrorSendMessage": "No sabemos cómo abrir este contenido:",
+      "copied_clipboard": "Copiado en el portapapeles",
+      "add_favorites": "Agregar a favoritos",
+      "remove_favorites": "Eliminar de favoritos",
+      "image_saved": "Imagen guardada en album.",
+      "engines_dialog": "Selecciona un  motor de búsqueda"
     }
   },
-  "en-EN": {
+  "en-GB": {
     "generic": {
       "poweredBy": "powered by",
       "themes": "Themes",
       "type": "Type",
       "date": "Date",
-      "state": "State"
+      "state": "State",
+      "name": "Name",
+      "content": "Content",
+      "notListed": "Unlisted",
+      "listed": "Listed",
+      "notChecked": "Pending",
+      "noURL": "No URL"
     },
     "contextual": {
       "vibration_button": "Button vibration",
@@ -39,7 +60,17 @@
       "first_search": "Do your first search",
       "last_search": "last search",
       "grant_permission": "grant permission",
-      "text_permission_camera": "We need your permission to show the camera"
+      "text_permission_camera": "We need your permission to show the camera",
+      "barcode_title": "Barcode type",
+      "input_name_placeholder": "custom name",
+      "drawer_text": "Value options",
+      "initDateTime": "On the {{ val , datetime}}",
+      "ErrorSendMessage": "Don't know how to open this content:",
+      "copied_clipboard": "Copied to clipboard",
+      "add_favorites": "Add to favorites",
+      "remove_favorites": "Remove from favorites",
+      "image_saved": "Image saved in album.",
+      "engines_dialog": "Select a search engine"
     }
   }
 }

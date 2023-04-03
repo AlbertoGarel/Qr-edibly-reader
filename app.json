@@ -58,11 +58,19 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow $(APP_NAME) to access your photos.",
+          "savePhotosPermission": "Allow $(APP_NAME) to save photos.",
+          "isAccessMediaLocationEnabled": true
+        }
       ]
     ]
   },
   "react-native-google-mobile-ads": {
-    "android_app_id": "",
+    "android_app_id": "ca-app-pub-5632250524548972~9810473076",
     "ios_app_id": "ca-app-pub-xxxxxxxx~xxxxxxxx"
   }
 }

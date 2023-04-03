@@ -1,4 +1,3 @@
-// import 'react-native-reanimated';
 import { useIsFocused, useTheme } from "@react-navigation/native";
 import * as React from "react";
 import { useCallback, useEffect } from "react";
@@ -10,19 +9,16 @@ import BarcodeMask, { LayoutChangeEvent } from "react-native-barcode-mask";
 import {
   Barcode,
   BarcodeFormat,
-  Point,
-  scanBarcodes,
-  CodeScannerOptions,
-  BarcodeValueType
+  Point
 } from "vision-camera-code-scanner";
 import { DEVICE_PIXEL_RATIO, WINDOW_HEIGHT, WINDOW_WIDTH } from "../constants/expoConstants";
 import { custom_useScanBarcodes } from "../frameprocessor/frameprocessor";
 import { padding, styles_sheet } from "../constants/styles_sheet";
-import TouchableOpacityicon from "../components/TouchableOpacityIcon";
+import TouchableOpacityicon from "../components/microComponents/TouchableOpacityIcon";
 import Slider from "@react-native-community/slider";
 import { connect } from "react-redux";
 import { AppState } from "../store/types";
-import PermissionView from "../components/PermissionView";
+import PermissionView from "./PermissionView";
 import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner, BarCodeScannerResult, Constants } from "expo-barcode-scanner";
 import { ImagePickerResult } from "expo-image-picker";
@@ -59,8 +55,8 @@ const CameraScanner = ({ navigation, camera_position }) => {
   const [mask, getMask] = React.useState<object>({});
   const [torch_enable, setTorchEnable] = React.useState<"off" | "on">("off");
   const [sliderValue, setSlidervalue] = React.useState<number>(1);
-
   const [barcode_result, setBarcode] = React.useState<Barcode[]>([]);
+
   React.useEffect((): () => void => {
     let is_Mounted = true;
 
@@ -100,7 +96,7 @@ const CameraScanner = ({ navigation, camera_position }) => {
         getColor("#7CFC00");
         onQRCodeDetected(barcode_result)
           .then(response => {
-            navigation.navigate("prueba", {
+            navigation.navigate("codescreen", {
               code: barcode_result,
               imageData: response
             });
@@ -117,12 +113,6 @@ const CameraScanner = ({ navigation, camera_position }) => {
 
   const onQRCodeDetected = useCallback(async (code: {}) => {
     try {
-      // return await camera.current.takePhoto({
-      //   flash: "off",
-      //   enableAutoStabilization: true,
-      //   qualityPrioritization: 'speed',
-      //   skipMetadata: true
-      // })
       return await camera.current.takeSnapshot({
         quality: 100,
         skipMetadata: true
@@ -154,7 +144,6 @@ const CameraScanner = ({ navigation, camera_position }) => {
         width = _frameWidth;
         height = _frameHeight;
       } else {
-        // console.log("Has rotation");
         width = _frameHeight;
         height = _frameWidth;
       }
@@ -187,14 +176,9 @@ const CameraScanner = ({ navigation, camera_position }) => {
     }
   }
 
-  // IMAGE PICKER
-  const [image, setImage] = React.useState(null);
-
   const pickImage = async () => {
     try {
       /*                BarcodeReader expo          */
-      console.log("hsh map", BarCodeScanner.Constants.BarCodeType);
-
       let result: ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: false,
@@ -224,7 +208,6 @@ const CameraScanner = ({ navigation, camera_position }) => {
           // BarCodeScanner.Constants.BarCodeType.upc_ean // no compatible?
         ]
       );
-      console.log("read qr code", data_image);
       // RESPONSE IS [] (no recognize) notify success and exit.
       if (!data_image.length) {
         // add pill notify.
@@ -238,7 +221,7 @@ const CameraScanner = ({ navigation, camera_position }) => {
       if (data_barcode[0].type === 256) {
         // is QR code
         const substract_type_qr: string = getBarcodeValuesTypes_qr(data_barcode[0].data);
-        const type_qr = BarcodeValueTypes.filter(item => Object.keys(item)[0] === substract_type_qr.toUpperCase());
+        const type_qr = BarcodeValueTypes[substract_type_qr.toUpperCase()];
         container_data_for_send.content = { type: Object.values(type_qr).length ? Object.values(type_qr[0])[0] : 7 };
       }
       //when type... switch() and select decode data;
@@ -248,9 +231,12 @@ const CameraScanner = ({ navigation, camera_position }) => {
       container_data_for_send.displayValue = data_barcode[0].data;
       container_data_for_send.rawValue = data_barcode[0].data;
 
-      console.log("container_data_for_send[0].format", container_data_for_send);
+      navigation.navigate("codescreen", {
+        code: [container_data_for_send],
+        imageData: null
+      });
     } catch (err) {
-      console.log("error reading image code", err);
+      if (__DEV__) console.log("error reading image code", err);
     }
   };
 
@@ -264,17 +250,17 @@ const CameraScanner = ({ navigation, camera_position }) => {
       {device != null &&
       hasPermission && (
         <>
-          <Camera
-            ref={camera}
-            style={StyleSheet.absoluteFill}
-            device={device}
-            isActive={isFocused}
-            frameProcessor={my_frameProcessor}
-            frameProcessorFps={5}
-            zoom={sliderValue}
-            photo={true}
-            orientation="portrait"
-            torch={torch_enable}
+          <Camera focusable
+                  ref={camera}
+                  style={StyleSheet.absoluteFill}
+                  device={device}
+                  isActive={isFocused}
+                  frameProcessor={my_frameProcessor}
+                  frameProcessorFps={5}
+                  zoom={sliderValue}
+                  photo={false}
+                  orientation="portrait"
+                  torch={torch_enable}
           />
           {barcode_result.map((barcode, idx) => (
             <Text key={idx} style={styles.barcodeText}>
@@ -289,7 +275,7 @@ const CameraScanner = ({ navigation, camera_position }) => {
             showAnimatedLine
             useNativeDriver={true}
             onLayoutMeasured={handler_onLayoutMeasured}
-            animatedLineColor={colors.card}
+            animatedLineColor={colors.primary}
           />
           <View style={[styles_sheet.flexColumn, {
             position: "absolute",
@@ -299,40 +285,38 @@ const CameraScanner = ({ navigation, camera_position }) => {
             paddingVertical: padding * 2
           }]}>
             <View style={[styles_sheet.centerCenter, {
-              width: "100%",
               height: 50,
               zIndex: 1,
-              flexDirection: "row"
+              flexDirection: "row",
+              justifyContent: "space-around",
+              alignItems: "center"
             }]}>
               <TouchableOpacityicon image_height={40}
                                     image_width={40}
-                                    margin={padding}
+                                    margin={padding * 2}
                 // _onPress={() => alert("gallery")}
                                     _onPress={pickImage}
-                                    src_image={dark || name !== "light_theme" ?
-                                      require("../assets/images/gallery_light.png")
-                                      :
-                                      require("../assets/images/gallery_dark.png")
+                                    src_image={dark || name !== "light_theme"
+                                      ? require("../assets/images/gallery_light.png")
+                                      : require("../assets/images/gallery_dark.png")
                                     }
               />
               <TouchableOpacityicon image_width={40}
-                                    margin={padding}
+                                    margin={padding * 2}
                                     _onPress={onTorchPressed}
-                                    src_image={torch_enable === "off" ?
-                                      dark || name !== "light_theme" ? require("../assets/images/no_flash_light.png") : require("../assets/images/no_flash_dark.png")
-                                      :
-                                      dark || name !== "light_theme" ? require("../assets/images/flash_light.png") : require("../assets/images/flash_dark.png")
+                                    src_image={torch_enable === "off"
+                                      ? dark || name !== "light_theme" ? require("../assets/images/no_flash_light.png") : require("../assets/images/no_flash_dark.png")
+                                      : dark || name !== "light_theme" ? require("../assets/images/flash_light.png") : require("../assets/images/flash_dark.png")
                                     }
                                     image_height={40}
               />
               <TouchableOpacityicon image_height={40}
                                     image_width={40}
-                                    margin={padding}
+                                    margin={padding * 2}
                                     _onPress={onFlipCameraPressed}
-                                    src_image={dark || name !== "light_theme" ?
-                                      require("../assets/images/flip_light.png")
-                                      :
-                                      require("../assets/images/flip_dark.png")
+                                    src_image={dark || name !== "light_theme"
+                                      ? require("../assets/images/flip_light.png")
+                                      : require("../assets/images/flip_dark.png")
                                     }
               />
             </View>
@@ -359,8 +343,8 @@ const CameraScanner = ({ navigation, camera_position }) => {
                 style={{ flex: 4, height: 40 }}
                 minimumValue={1}
                 maximumValue={2}
-                thumbTintColor={dark || name !== "light_theme" ? colors.card : "#5e5e5e"}
-                minimumTrackTintColor={colors.border}
+                thumbTintColor={dark || name !== "light_theme" ? colors.primary : "#5e5e5e"}
+                minimumTrackTintColor={colors.primary}
                 maximumTrackTintColor={colors.text}
                 onValueChange={value => setSlidervalue(value)}
                 value={sliderValue}
@@ -411,3 +395,74 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   }
 });
+
+// for QR codefrom image
+
+// const parsed =
+//   `BEGIN:VCARD
+// VERSION:3.0
+// N:Elías;García;Alerto;Dr.;Jr.
+// FN: Dr. Alberto García Jr.
+// ADR;TYPE=HOME:;;c/ Párroco Cobos 8, pta. 2;valencia;Valencia;46035;España
+// ADR;TYPE=WORK:;;c/ Camino de Valencia 9, pta. 2;valencia;Valencia;46035;España
+// TEL;TYPE=WORK:+34665537274
+// TEL;TYPE=HOME:+34665666666
+// EMAIL;TYPE=WORK:agarcweb@gmail.com
+// EMAIL:agarcweb@gmail.com
+// EMAIL:agarcweb@gmail.com
+// PHOTO;JPEG;ENCODING=BASE64:[base64-data]
+// URL:http://punto.com
+// END:VCARD`;
+// const complete_parse =
+//   `BEGIN:VCARD
+// VERSION:2.1
+// ADR;TYPE=home:;;123 Main St.;Springfield;IL;12345;USA
+// AGENT:http://mi6.gov.uk/007
+// ANNIVERSARY:19901021
+// BDAY:19700310
+// BEGIN:VCARD
+// CALADRURI:http://example.com/calendar/jdoe
+// CALURI:http://example.com/calendar/jdoe
+// CATEGORIES:swimmer,biker
+// CLASS:public
+// CLIENTPIDMAP:1;urn:uuid:3df403f4-5924-4bb7-b077-3c711d9eb34b
+// EMAIL:johndoe@hotmail.com
+// //
+// FBURL:http://example.com/fb/jdoe
+// FN:Dr. John Doe
+// GENDER:F
+// GEO:39.95;-75.1667
+// IMPP:aim:johndoe@aol.com
+// KEY;TYPE=PGP:http://example.com/key.pgp
+// KIND:individual
+// LABEL;TYPE=HOME:123 Main St. nSpringfield, IL 12345 nUSA
+// LANG:fr-CA
+// LOGO;TYPE=PNG:http://example.com/logo.png
+// MAILER:Thunderbird
+// MEMBER:urn:uuid:03a0e51f-d1aa-4385-8a53-e29025acd8af
+// //
+// N:Doe;John;;Dr;
+// NICKNAME:Jon,Johnny
+// NOTE:I am proficient in Tiger-Crane Style, nand I am more than proficient in the exquisite art of the Samurai sword.
+// ORG:Google;GMail Team;Spam Detection Squad
+// PHOTO;JPEG:http://example.com/photo.jpg
+// PROFILE:VCARD
+// RELATED;TYPE=friend:urn:uuid:03a0e51f-d1aa-4385-8a53-e29025acd8af
+// REV:20121201T134211Z
+// ROLE:Executive
+// SORT-STRING:Doe
+// SOUND;OGG:http://example.com/sound.ogg
+// //
+// SOURCE:http://johndoe.com/vcard.vcf
+// TEL;TYPE=cell:(123) 555-5832
+// TITLE:V.P. Research and Development
+// TZ:America/New_York
+// UID:urn:uuid:da418720-3754-4631-a169-db89a02b831b
+// URL:http://www.johndoe.com
+// VERSION:3.0
+// END:VCARD`;
+// parseString(complete_parse, function(err, json) {
+//   if (err)
+//     return console.log(err);
+//   // console.log("\n\nParse from string:\n\n", json);
+// });

@@ -1,27 +1,30 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Button, Image, TouchableHighlight, ImageBackground, SafeAreaView } from "react-native";
-import LogoTitle from "../components/LogoTitle";
-import Title from "../components/Title";
+import LogoTitle from "../components/microComponents/LogoTitle";
+import Title from "../components/microComponents/Title";
 import { WINDOW_WIDTH, BREACKPOINT_DEVICES } from "../constants/expoConstants";
 import {
   padding,
   styles_sheet
 } from "../constants/styles_sheet";
-import SquareButton from "../components/SquareButton";
-import Albertogarellogo from "../components/albertogarelLogo";
-import RoundedButton from "../components/RoundedButton";
+import SquareButton from "../components/microComponents/SquareButton";
+import AlbertogarelLogo from "../components/microComponents/AlbertogarelLogo";
+import RoundedButton from "../components/microComponents/RoundedButton";
 import { useTheme } from "@react-navigation/native";
 import * as Font from "expo-font";
 import LastSearch from "../components/LastSearch";
-import RNpicker from "../components/RNpicker";
+import RNpicker from "../components/microComponents/RNpicker";
 import * as React from "react";
+import { connect } from "react-redux";
+import { AppState } from "@App/store/types";
+import { useFocusEffect } from "@react-navigation/native";
 
 
 type State = {
   lupa: boolean, bookmark: boolean, bug: boolean, settings: boolean
 }
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation, last }) => {
   const { dark, colors } = useTheme();
   const tabletPadding = WINDOW_WIDTH >= BREACKPOINT_DEVICES ? { paddingHorizontal: WINDOW_WIDTH * .10 } : null;
 
@@ -33,7 +36,18 @@ const Home = ({ navigation }) => {
     settings: false
   });
 
-  const [fontLoad, getFontLoad] = useState(false);
+  const [fontLoad, getFontLoad] = useState<boolean>(false);
+  const [lastSearch, setLastSearch] = useState<History | {}>({});
+
+  useFocusEffect(
+    React.useCallback(() => {
+      let unMount = true;
+
+      const latest = [...last].sort((a, b) => new Date(b.date + " " + b.hour).getTime() - new Date(a.date + " " + a.hour).getTime());
+      setLastSearch(latest[0] || {});
+      return () => unMount = false;
+    }, [last])
+  );
 
   useEffect(() => {
     Font.loadAsync({
@@ -43,9 +57,7 @@ const Home = ({ navigation }) => {
     })
       .then(() => getFontLoad(true))
       .catch(() => {
-        if (__DEV__) {
-          console.log("error font loaded");
-        }
+        if (__DEV__) console.log("error font loaded");
       });
   }, []);
 
@@ -53,6 +65,15 @@ const Home = ({ navigation }) => {
     setPressed(value);
     if (value === false) navigation.navigate("camera");
   };
+
+  function handlerRoute(lastSearch) {
+    if (Object.keys(lastSearch).length) {
+      navigation.navigate("codescreen", {
+        code: [lastSearch],
+        imageData: null
+      });
+    }
+  }
 
   function squares_pressable(identifier, value) {
     setSquarePressed((prevState) => {
@@ -69,12 +90,12 @@ const Home = ({ navigation }) => {
       image_src: require("../assets/images/history.png"),
       func_press: squares_pressable,
       identifier: "history",
-      press_state: squarepressed.lupa,
+      press_state: squarepressed.lupa
     },
     {
-      image_src: require("../assets/images/bookmark.png"),
+      image_src: require("../assets/images/bookmark_full_dark.png"),
       func_press: squares_pressable,
-      identifier: "bookmark",
+      identifier: "favourites",
       press_state: squarepressed.bookmark
     },
     {
@@ -109,7 +130,7 @@ const Home = ({ navigation }) => {
             flex: 2,
             justifyContent: "space-evenly"
           }]}>
-          <LastSearch />
+          <LastSearch handlerRoute={handlerRoute} last={lastSearch} />
           <RoundedButton
             press_func={rounded_pressable} pressed={pressed} />
         </View>
@@ -134,7 +155,7 @@ const Home = ({ navigation }) => {
         </View>
         <View
           style={[styles_sheet.centerCenter, { alignSelf: "flex-end" }]}>
-          <Albertogarellogo
+          <AlbertogarelLogo
             textColor={colors.text}
           />
         </View>
@@ -142,7 +163,14 @@ const Home = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-export default Home;
+const mapStateToProps = (state: AppState) => ({
+  last: state.usedHistory
+});
+
+export default connect(
+  mapStateToProps
+)(Home);
+
 const styles = StyleSheet.create({
   parent: {
     flex: 1,

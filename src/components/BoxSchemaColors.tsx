@@ -15,6 +15,7 @@ import {addTheme} from "../store/themes/actions";
 import {custom_themes} from "../themes/themes";
 import Settings from "../screens/Settings";
 import {useTheme} from "@react-navigation/native";
+import uuid from 'react-native-uuid';
 
 type Props = {
     boxWidth: number,
@@ -53,7 +54,7 @@ const BoxSchemaColors = ({
     const margin = ((WINDOW_WIDTH - (widthBorder * numElements)) / numElements + (widthBorder / numElements));
 
     return (
-        <TouchableHighlight onPress={!_onPress ? () => onAddTheme({...selected}) : _onPress}
+        <TouchableHighlight  onPress={!_onPress ? () => onAddTheme({...selected}) : _onPress}
                             activeOpacity={0.6}
                             underlayColor="transparent"
                             style={{

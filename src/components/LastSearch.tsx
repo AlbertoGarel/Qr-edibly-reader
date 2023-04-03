@@ -1,14 +1,21 @@
 import { View, Text, StyleSheet, TouchableHighlight, Image } from "react-native";
-import { HEIGHT_BREACKPOINT_DEVICES, WINDOW_HEIGHT, WINDOW_WIDTH } from "../constants/expoConstants";
+import { HEIGHT_BREACKPOINT_DEVICES, WINDOW_HEIGHT } from "../constants/expoConstants";
 import { useTheme } from "@react-navigation/native";
 import { medium_fontSize, padding, rounded_less, styles_sheet } from "../constants/styles_sheet";
 import i18n from "../translate";
+import React, { useEffect } from "react";
+import ListedPill from "../components/microComponents/ListedPill";
+import { History } from "../store/types";
 
-const LastSearch = () => {
+type Props = {
+  last: any,
+  handlerRoute: (param: History) => void
+}
+const LastSearch = ({ handlerRoute, last }: Props) => {
   const { dark, colors } = useTheme();
-  let date = new Date();
+
   return (
-    <TouchableHighlight onPress={() => alert("pressed")} underlayColor={"transparent"}>
+    <TouchableHighlight onPress={() => handlerRoute(last)} underlayColor={"transparent"}>
       <View style={{ minWidth: "50%", maxWidth: "90%" }}>
         <View
           style={{ ...styles_sheet.rowBetween, paddingHorizontal: padding - 8, paddingVertical: padding - 5 }}>
@@ -25,7 +32,7 @@ const LastSearch = () => {
         </View>
         <View style={{ ...styles.card, backgroundColor: colors.card + 99, borderColor: colors.border }}>
           {
-            !true ?
+            !Object.keys(last).length ?
               <View style={{ ...styles_sheet.flexColumn, width: "100%" }}>
                 <Image source={dark ?
                   require("../assets/images/no_last_search_ligth.png")
@@ -43,29 +50,34 @@ const LastSearch = () => {
               </View>
               :
               <>
-                <Text style={{
-                  color: colors.primary, ...styles.primarytext, marginBottom: padding
-                }}>
-                  {i18n.t("generic.type")}: <Text style={{ ...styles.secondaryText, color: colors.text }}>URL</Text>
+                <Text numberOfLines={1} ellipsizeMode={"tail"}
+                      style={{ color: colors.primary, ...styles.primarytext }}>{i18n.t("generic.name")}:
+                  <Text style={{ color: colors.text, ...styles.secondaryText }}> {last.name}</Text>
+                </Text>
+                <Text style={{ ...styles.primarytext, color: colors.primary }}>
+                  {i18n.t("generic.date")}: <Text
+                  style={{
+                    ...styles.secondaryText,
+                    color: colors.text
+                  }}>{i18n.strftime(new Date(last.date), "%d/%m/%Y")}</Text>
                 </Text>
                 <View style={{
                   ...styles_sheet.rowBetween,
                   alignItems: "flex-start",
-                  marginBottom: padding,
                   minWidth: "100%"
                 }}>
-                  <Text style={{ ...styles.primarytext, color: colors.primary }}>
-                    {i18n.t("generic.date")}: <Text
-                    style={{ ...styles.secondaryText, color: colors.text }}>{i18n.strftime(date, "%d/%m/%Y")}</Text>
+                  <Text style={{
+                    color: colors.primary, ...styles.primarytext, marginBottom: padding
+                  }}>
+                    {i18n.t("generic.type")}: <Text
+                    style={{ ...styles.secondaryText, color: colors.text }}> {last.codetype}</Text>
                   </Text>
-                  <Text style={{ marginLeft: "auto", color: colors.primary }}>
-                    {i18n.t("generic.state")}: <Text
-                    style={{ ...styles.secondaryText, color: colors.text }}>not listed</Text>
-                  </Text>
+                  <ListedPill isListed={last.listed} />
                 </View>
-                <Text style={{ ...styles.contentText, color: colors.text }}
+                <Text style={{ ...styles.primarytext, color: colors.primary }}>{i18n.t("contextual.content")}:</Text>
+                <Text style={{ ...styles.contentText, ...styles.secondaryText, color: colors.text }}
                       numberOfLines={1}
-                >estoseráelcontenido</Text>
+                >{last.rawValue}</Text>
               </>
           }
         </View>
@@ -95,10 +107,12 @@ const styles = StyleSheet.create({
       fontSize: 14
     },
     contentText: {
-      padding: padding,
+      paddingVertical: padding / 2,
+      paddingHorizontal: padding,
       // flexShrink: 1,
       fontSize: 18
     }
   })
 ;
+
 export default LastSearch;
