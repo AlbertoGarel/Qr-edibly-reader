@@ -1,8 +1,13 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ImageURISource, ViewStyle } from "react-native";
 import SvgComponent from "./SvgComponent";
 
-const BgComponent = ({ svgOptions, styleOptions }) => {
+interface BgComponentProps {
+  svgOptions: { svgData: ImageURISource | ImageURISource[]; svgWidth: number; svgHeight: number; color?: string; }
+  styleOptions:  ViewStyle
+}
+
+const BgComponent = ({ svgOptions, styleOptions }: BgComponentProps) => {
 
   return (
     <View style={[styles.absolut, { ...styleOptions }]}>

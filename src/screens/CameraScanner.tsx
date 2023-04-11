@@ -305,8 +305,8 @@ const CameraScanner = ({ navigation, camera_position }) => {
                                     margin={padding * 2}
                                     _onPress={onTorchPressed}
                                     src_image={torch_enable === "off"
-                                      ? dark || name !== "light_theme" ? require("../assets/images/no_flash_light.png") : require("../assets/images/no_flash_dark.png")
-                                      : dark || name !== "light_theme" ? require("../assets/images/flash_light.png") : require("../assets/images/flash_dark.png")
+                                      ? dark || name !== "light_theme" ? require("../assets/images/flash_light.png") : require("../assets/images/flash_dark.png")
+                                      : dark || name !== "light_theme" ? require("../assets/images/no_flash_light.png") : require("../assets/images/no_flash_dark.png")
                                     }
                                     image_height={40}
               />

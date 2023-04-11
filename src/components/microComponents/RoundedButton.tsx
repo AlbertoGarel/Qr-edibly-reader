@@ -5,7 +5,7 @@ import {simpleVibrated} from "../../utils/utils";
 
 type Props = {
     pressed: boolean,
-    press_func: any,
+    press_func: (value: boolean) => void,
 }
 
 const RoundedButton = ({pressed, press_func}: Props) => {

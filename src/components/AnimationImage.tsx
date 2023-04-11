@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image, Animated, Text } from "react-native";
+import { StyleSheet, View, Image, Animated, Text, LayoutRectangle } from "react-native";
 import { padding, styles_sheet } from "../constants/styles_sheet";
 import * as React from "react";
 import { QR_LAYOUT, WINDOW_HEIGHT, WINDOW_WIDTH } from "../constants/expoConstants";
@@ -16,10 +16,19 @@ import { addHistory } from "../store/history/actions";
 import { changeStateFavourite } from "../store/favourites/actions";
 import { barcodeFormat } from "../constants/barcodes_values";
 import BarcodeBuilder from "../components/BarcodeBuilder";
+import { History } from "../store/types";
 
 const square_face_big = WINDOW_WIDTH * .50;
 const square_face_small = WINDOW_WIDTH * .20;
 
+interface ImageProps {
+  height: number,
+  isRawPhoto: boolean,
+  metadata: null,
+  path: string,
+  width: number,
+
+}
 type Props = {
   image: any,
   element_id: string,
@@ -40,19 +49,19 @@ const AnimationImage = ({
                           format_code
                         }: Props) => {
   const { dark, colors } = useTheme();
-  const viewShootRef = React.useRef(null);
+  const viewShootRef: React.MutableRefObject<any> = React.useRef(null);
 
   const [flipRotation, setFlipRotation] = React.useState<number>(0);
   const [flipImage, setFlipImage] = React.useState<boolean>(false);
-  const [layoutData, setLayoutData] = React.useState(null);
+  const [layoutData, setLayoutData] = React.useState<LayoutRectangle | null>(null);
   const [modalState, setModalState] = React.useState<boolean>(false);
-  const [viewShootCaptured, getViewShootCaptured] = React.useState("");
-  const [viewImage, setViewImage] = React.useState(image);
+  const [viewShootCaptured, getViewShootCaptured] = React.useState<string>("");
+  const [viewImage, setViewImage] = React.useState<string | null>(image);
 
   React.useEffect(() => {
-    console.log("todos los favoritos", favourite);
+    console.log('image', image)
     try {
-      const exist_Favourite = favourite.filter(element => element.id === element_id);
+      const exist_Favourite: History | object[] = favourite.filter((element: History) => element.id === element_id);
       setBookmark(!!exist_Favourite.length);
     } catch (e) {
       if (__DEV__) console.log("error", e);

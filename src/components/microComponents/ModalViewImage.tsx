@@ -6,13 +6,26 @@ import {
   PanResponder,
   View,
   StyleSheet,
-  Image
+  Image, ImageURISource
 } from "react-native";
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../../constants/expoConstants";
 import { padding, styles_sheet } from "../../constants/styles_sheet";
 import { useTheme } from "@react-navigation/native";
 
-const ModalViewImage = ({ layoutData, close, uriImage }) => {
+interface LayoutData {
+  x
+  y
+  width
+  height: number
+}
+
+interface Props {
+  layoutData: LayoutData
+  close: () => void
+  uriImage: ImageURISource | ImageURISource[]
+}
+
+const ModalViewImage = ({ layoutData, close, uriImage }: Props) => {
   const { dark, colors } = useTheme();
   const { x, y, width, height } = layoutData;
   const animtion = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
@@ -81,7 +94,7 @@ const ModalViewImage = ({ layoutData, close, uriImage }) => {
               ? {
                 height: "100%",
                 width: "100%",
-                alignItems: "center",
+                alignItems: "center"
               }
               : {
                 height: 0,
@@ -93,14 +106,14 @@ const ModalViewImage = ({ layoutData, close, uriImage }) => {
             {
               backgroundColor: colors.background,
               overflow: "hidden",
-              transform: animtion.getTranslateTransform(),
+              transform: animtion.getTranslateTransform()
             },
             styles_sheet.centerCenter
           ]}>
           <Image
             source={uriImage}
             resizeMode="cover"
-            style={[styles.fill, {height: height, width: width, padding: 10}]}
+            style={[styles.fill, { height: height, width: width, padding: 10 }]}
           />
         </Animated.View>
       </View>
@@ -124,7 +137,7 @@ const styles = StyleSheet.create({
     // height: "100%",
     // width: "100%",
     position: "absolute"
-  },
+  }
   // label: {
   //   color: "#fff",
   //   fontSize: 20,

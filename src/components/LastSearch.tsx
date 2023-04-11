@@ -44,20 +44,20 @@ const LastSearch = ({ handlerRoute, last }: Props) => {
                          height: WINDOW_HEIGHT >= HEIGHT_BREACKPOINT_DEVICES ? 100 : 50,
                          resizeMode: "contain"
                        }} />
-                <Text style={{ ...styles.secondaryText, fontSize: 18, color: colors.text }}>
+                <Text style={{ ...styles_sheet.secondText, fontSize: 18, color: colors.text }}>
                   {i18n.t("contextual.first_search")}
                 </Text>
               </View>
               :
               <>
                 <Text numberOfLines={1} ellipsizeMode={"tail"}
-                      style={{ color: colors.primary, ...styles.primarytext }}>{i18n.t("generic.name")}:
-                  <Text style={{ color: colors.text, ...styles.secondaryText }}> {last.name}</Text>
+                      style={{ color: colors.primary, ...styles_sheet.firstText }}>{i18n.t("generic.name")}:
+                  <Text style={{ color: colors.text, ...styles_sheet.secondText }}> {last.name}</Text>
                 </Text>
-                <Text style={{ ...styles.primarytext, color: colors.primary }}>
+                <Text style={{ ...styles_sheet.firstText, color: colors.primary }}>
                   {i18n.t("generic.date")}: <Text
                   style={{
-                    ...styles.secondaryText,
+                    ...styles_sheet.secondText,
                     color: colors.text
                   }}>{i18n.strftime(new Date(last.date), "%d/%m/%Y")}</Text>
                 </Text>
@@ -67,15 +67,15 @@ const LastSearch = ({ handlerRoute, last }: Props) => {
                   minWidth: "100%"
                 }}>
                   <Text style={{
-                    color: colors.primary, ...styles.primarytext, marginBottom: padding
+                    color: colors.primary, ...styles_sheet.firstText, marginBottom: padding
                   }}>
                     {i18n.t("generic.type")}: <Text
-                    style={{ ...styles.secondaryText, color: colors.text }}> {last.codetype}</Text>
+                    style={{ ...styles_sheet.secondText, color: colors.text }}> {last.codetype}</Text>
                   </Text>
                   <ListedPill isListed={last.listed} />
                 </View>
-                <Text style={{ ...styles.primarytext, color: colors.primary }}>{i18n.t("contextual.content")}:</Text>
-                <Text style={{ ...styles.contentText, ...styles.secondaryText, color: colors.text }}
+                <Text style={{ ...styles_sheet.firstText, color: colors.primary }}>{i18n.t("contextual.content")}:</Text>
+                <Text style={{ ...styles.contentText, ...styles_sheet.secondText, color: colors.text }}
                       numberOfLines={1}
                 >{last.rawValue}</Text>
               </>
@@ -98,12 +98,10 @@ const styles = StyleSheet.create({
       },
     primarytext: {
       flexShrink: 1,
-      fontFamily: "Ubuntu",
       fontSize: 16
     },
     secondaryText: {
       flexShrink: 1,
-      fontFamily: "Sniglet",
       fontSize: 14
     },
     contentText: {

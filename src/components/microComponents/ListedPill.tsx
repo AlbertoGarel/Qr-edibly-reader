@@ -8,7 +8,7 @@ type Props = {
   isListed: number
 };
 
-const listedPill = ({ isListed }: Props) => {
+const ListedPill = ({ isListed }: Props) => {
 
   const pillStyle = stylesPill(isListed);
   return (
@@ -21,7 +21,7 @@ const listedPill = ({ isListed }: Props) => {
     </Text>
   );
 };
-export default listedPill;
+export default ListedPill;
 const styles = StyleSheet.create({
   primary: {
     marginLeft: "auto",

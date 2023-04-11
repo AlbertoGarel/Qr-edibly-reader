@@ -92,7 +92,11 @@ export type DeleteHistoryAction = {
   type: string,
   id: string | number[]
 }
-export type HistoryListActions = AddHistoryAction | DeleteHistoryAction;
+export type DeleteByDateHistory = {
+  type: string,
+  date: string
+}
+export type HistoryListActions = AddHistoryAction | DeleteHistoryAction | DeleteByDateHistory;
 
 // FAVOURITES TYPES
 export type FavouritesInUseState = Favourites[];
@@ -106,4 +110,8 @@ export type DeleteValueFavouriteAction = {
   type: string,
   favouriteID: string
 }
-export type FavouriteListActions = ChangeValueFavouriteAction | DeleteValueFavouriteAction;
+export type DeleteByDateFavoriteAction = {
+  type: string
+  date: string
+}
+export type FavouriteListActions = ChangeValueFavouriteAction | DeleteValueFavouriteAction | DeleteByDateFavoriteAction;

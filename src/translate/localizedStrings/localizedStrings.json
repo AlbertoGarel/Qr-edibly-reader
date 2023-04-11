@@ -11,7 +11,27 @@
       "notListed": "No listado",
       "listed": "Listado",
       "notChecked": "Pendiente",
-      "noURL": "Sin URL"
+      "noURL": "Sin URL",
+      "hour": "Hora",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "history": "historial",
+      "favourite": "favorito{{key}}",
+      "settings": "ajustes",
+      "value": "Valor",
+      "ALL": "Todos",
+      "CONTACT_INFO": "Contacto",
+      "EMAIL": "Email",
+      "ISBN": "ISBN",
+      "PHONE": "Teléfono",
+      "PRODUCT": "Producto",
+      "SMS": "SMS",
+      "TEXT": "Texto",
+      "URL": "URL",
+      "WIFI": "Wifi",
+      "GEO": "Geolocalización",
+      "CALENDAR_EVENT": "Evento de calendario",
+      "DRIVER_LICENSE": "Permiso de conducción"
     },
     "contextual": {
       "vibration_button": "Vibración de botón",
@@ -32,7 +52,11 @@
       "add_favorites": "Agregar a favoritos",
       "remove_favorites": "Eliminar de favoritos",
       "image_saved": "Imagen guardada en album.",
-      "engines_dialog": "Selecciona un  motor de búsqueda"
+      "engines_dialog": "Selecciona un  motor de búsqueda",
+      "all_delete": "¿Desea eliminar todos los registros de {{key}}?",
+      "item_delete": "¿Desea elimnar el registro?",
+      "no_searchresult": "No se han encontrado registros",
+      "first_favourite": "Selecciona tu primer favorito"
     }
   },
   "en-GB": {
@@ -47,7 +71,27 @@
       "notListed": "Unlisted",
       "listed": "Listed",
       "notChecked": "Pending",
-      "noURL": "No URL"
+      "noURL": "No URL",
+      "hour": "Time",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "history": "history",
+      "favourite": "fauvorite{{key}}",
+      "settings": "settings",
+      "value": "Value",
+      "ALL": "All",
+      "CONTACT_INFO": "Contact info",
+      "EMAIL": "Email",
+      "ISBN": "ISBN",
+      "PHONE": "Phone",
+      "PRODUCT": "Product",
+      "SMS": "SMS",
+      "TEXT": "Text",
+      "URL": "URL",
+      "WIFI": "Wifi",
+      "GEO": "Geolocation",
+      "CALENDAR_EVENT": "Calendar event",
+      "DRIVER_LICENSE": "Driver license"
     },
     "contextual": {
       "vibration_button": "Button vibration",
@@ -70,7 +114,11 @@
       "add_favorites": "Add to favorites",
       "remove_favorites": "Remove from favorites",
       "image_saved": "Image saved in album.",
-      "engines_dialog": "Select a search engine"
+      "engines_dialog": "Select a search engine",
+      "all_delete": "Do you want to delete all {{key}} records?",
+      "item_delete": "Do you want to delete this record?",
+      "no_searchresult": "No records found",
+      "first_favourite": "Select your first favorite"
     }
   }
 }

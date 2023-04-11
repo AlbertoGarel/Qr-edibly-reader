@@ -1,4 +1,5 @@
 import {StyleSheet} from "react-native";
+import { useTheme } from "@react-navigation/native";
 
 export const COLORS = {
     PRIMARY: '#007AFF',
@@ -60,6 +61,12 @@ export const styles_sheet = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    firstText:{
+        fontFamily: "Sniglet",
+    },
+    secondText:{
+        fontFamily: "Ubuntu",
     }
 })
 

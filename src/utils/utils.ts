@@ -1,12 +1,11 @@
 import Clipboard from "@react-native-clipboard/clipboard";
-import { Alert, Linking, Share, ToastAndroid, Vibration } from "react-native";
+import { Alert, ImageURISource, Linking, Share, ShareAction, ToastAndroid, Vibration } from "react-native";
 import { ONE_SECOND_IN_MS } from "../constants/expoConstants";
 import i18n from "../translate";
 import * as Sharing from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
-import { barcodelineal_icon_text_Header, drawerActions } from "@App/utils/actionsAndIcons";
-import LinealBarcodesElement from "@App/components/LinealBarcodesElement";
-import * as React from "react";
+import { History } from "../store/types";
+import { PermissionResponse } from "expo-media-library";
 // import * as MediaLibrary from 'expo-media-library';
 /**
  *  Set audio next or back
@@ -26,7 +25,7 @@ import * as React from "react";
  *  @param time: <number>
  *
  **/
-function simpleVibrated(time: number) {
+function simpleVibrated(time: number): void {
   Vibration.vibrate(time * ONE_SECOND_IN_MS);
 }
 
@@ -38,7 +37,7 @@ function simpleVibrated(time: number) {
  *  @param copyStr: <string>
  *
  **/
-async function copyToClipboard(copyStr: string | any) {
+async function copyToClipboard(copyStr: string | any): Promise<void> {
   await Clipboard.setString(copyStr);
   showToastWithGravity(i18n.t("contextual.copied_clipboard"));
 };
@@ -49,7 +48,7 @@ async function copyToClipboard(copyStr: string | any) {
  *  @return <string>
  *
  **/
-async function fetchCopiedText() {
+async function fetchCopiedText(): Promise<string> {
   return await Clipboard.getString();
 };
 
@@ -58,7 +57,7 @@ async function fetchCopiedText() {
  *  Get content of image in base64 string type
  *
  **/
-async function _getContent() {
+async function _getContent(): Promise<string> {
   return await Clipboard.getImage();
 }
 
@@ -71,8 +70,8 @@ async function _getContent() {
  * @return <string> "name of codebar".
  *
  * */
-function barcodeType(value: number | string) {
-  let name_code = "";
+function barcodeType(value: number | string): string {
+  let name_code: string = "";
   switch (value) {
     case 4096:
       name_code = "aztec";
@@ -125,7 +124,7 @@ function barcodeType(value: number | string) {
  *
  *
  * */
-function getBarcodeValuesTypes_qr(objectkey_data: string) {
+function getBarcodeValuesTypes_qr(objectkey_data: string): string {
   // "data": "WIFI:T:WPA;P:Y8Z6JKTKKMHRWS;S:Lowi0927;H:false;",
   const data: string[] = objectkey_data.split(";");
   let is_type: string = "TEXT";
@@ -156,7 +155,7 @@ export const response_object: { content: {}, displayValue: string, format: numbe
  * @return void.
  *
  * */
-const error_message = (item: string) => {
+const error_message = (item: string): void => {
   return Alert.alert(`${i18n.t("contextual.ErrorSendMessage")} ${item}`);
 };
 
@@ -169,9 +168,9 @@ const error_message = (item: string) => {
  * @return void.
  *
  * */
-const handler_linking_url = async (url: string) => {
+const handler_linking_url = async (url: string): Promise<void> => {
   try {
-    const supported = await Linking.canOpenURL(url);
+    const supported: boolean = await Linking.canOpenURL(url);
 
     if (supported) {
       await Linking.openURL(url);
@@ -192,7 +191,7 @@ const handler_linking_url = async (url: string) => {
  * @return void.
  *
  * */
-const shareMessage = async (text: string) => {
+const shareMessage = async (text: string): Promise<ShareAction> => {
   try {
     return await Share.share({
       message: text
@@ -211,10 +210,10 @@ const shareMessage = async (text: string) => {
  * @return void.
  *
  * */
-const sharing_content = async (item: string) => {
+const sharing_content = async (item: string): Promise<void> => {
   try {
-    let extension = item.split(".");
-    const sharing = await Sharing.isAvailableAsync();
+    let extension: string[] = item.split(".");
+    const sharing: boolean = await Sharing.isAvailableAsync();
     if (sharing) {
       await Sharing.shareAsync(item, {
         dialogTitle: "image",
@@ -233,7 +232,7 @@ const sharing_content = async (item: string) => {
  *  @param message: <string>
  *
  * */
-const showToastWithGravity = (message) => {
+const showToastWithGravity = (message: string): void => {
   ToastAndroid.showWithGravity(
     message,
     ToastAndroid.SHORT,
@@ -245,8 +244,8 @@ const showToastWithGravity = (message) => {
  *
  *
  * */
-const handleSave_image_to_gallery = async image => {
-  let permission_media = await MediaLibrary.getPermissionsAsync();
+const handleSave_image_to_gallery = async (image: string): Promise<void> => {
+  let permission_media: PermissionResponse = await MediaLibrary.getPermissionsAsync();
   if (!permission_media.granted) {
     await MediaLibrary.requestPermissionsAsync();
   }
@@ -265,9 +264,9 @@ const handleSave_image_to_gallery = async image => {
  *  @param content: <string>
  *
  * */
-function isURL(content) {
+function isURL(content: string): boolean {
   if (!content) return false;
-  let pattern = new RegExp("^(https?:\\/\\/)?" + // protocol
+  let pattern: RegExp | string = new RegExp("^(https?:\\/\\/)?" + // protocol
     "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
     "((\\d{1,3}\\.){3}\\d{1,3}))|" + // OR ip (v4) address
     "localhost" + // OR localhost
@@ -285,32 +284,37 @@ function isURL(content) {
  * @params string
  *
  * */
-function isNumber(param: string) {
+function isNumber(param: string): boolean {
   let isNum = parseInt(param);
   return !!isNum;
 }
 
 /**
  *
- * Check ISBN code
+ * Check ISBN content, text content, number content and url content.
  *
- * @return boolean
+ * @return JavaScript Object : { typestring: string, typenumber: number }
  *
- * @params content: <string> text | product | book
+ * @params content: <string> text | product | book | url
  *
  * */
-const check_type_linealbarcode_content = (content: string) => {
-  let checked = "text";
-  let isNumber = !isNaN(+content);
-  if (!isNumber) return checked;
-  if (isURL(content)) return "url";
+const check_type_linealbarcode_content = (content: string): { typestring: string, typenumber: number } => {
+  let checked: { typestring: string, typenumber: number };
+  let isNumber: boolean = !isNaN(+content);
+
+  if (isURL(content)) return { typestring: "url", typenumber: 8 };
 
   let isbn_prefix = parseInt(content.substring(0, 3));
   if (isbn_prefix < 978 || isbn_prefix > 979 && isNumber) {
-    checked = "product";
+    checked = { typestring: "product", typenumber: 5 };
+  } else if (isbn_prefix === 978 || isbn_prefix === 979 && isNumber) {
+    checked = { typestring: "book", typenumber: 3 };
+  } else if (isNumber) {
+    checked = { typestring: "product", typenumber: 5 };
   } else {
-    checked = "book";
+    checked = { typestring: "text", typenumber: 7 };
   }
+
   return checked;
 };
 /**
@@ -322,8 +326,8 @@ const check_type_linealbarcode_content = (content: string) => {
  * @params data_type: <string>
  *
  * */
-const getType_EAN_13 = (data_type: string) => {
-  const data_type_length = data_type.length;
+const getType_EAN_13 = (data_type: string): string => {
+  const data_type_length: number = data_type.length;
   switch (data_type_length) {
     case 8:
       return "EAN-8";
@@ -346,7 +350,7 @@ const getType_EAN_13 = (data_type: string) => {
  *
  * */
 
-function changeNameImageFile(imageFilePath: string, toSearch: string) {
+function changeNameImageFile(imageFilePath: string, toSearch: string): string {
   const pathImage = imageFilePath.split(toSearch);
   return pathImage[0] + "Qr-edibly" + pathImage[1];
 }
@@ -355,13 +359,13 @@ function changeNameImageFile(imageFilePath: string, toSearch: string) {
  *
  * Return string Date and  string hour by separate.
  *
- * @return Object
+ * @return Object { date: string, hour: string }
  *
  * @params stringdate: new Date()
  *
  * */
-function pullApartDateString(stringdate) {
-  const pullApart = stringdate.split(" ");
+function pullApartDateString(stringdate: string): { date: string, hour: string } {
+  const pullApart: string[] = stringdate.split(" ");
   return {
     date: `${pullApart[0]} ${pullApart[1]} ${pullApart[2]} ${pullApart[3]}`,
     hour: `${pullApart[4]}`
@@ -377,7 +381,7 @@ function pullApartDateString(stringdate) {
  * @params data: number
  *
  * */
-function isCheckedUrl(data) {
+function isCheckedUrl(data: number): string {
   switch (data) {
     case 1:
       return i18n.t("generic.notChecked");
@@ -399,7 +403,7 @@ function isCheckedUrl(data) {
  * @params typeCode: string
  *
  * */
-function checkTypeContentCodebar(typeCode) {
+function checkTypeContentCodebar(typeCode: string | number): number {
   switch (typeCode) {
     // lineal barcodes
     case "EAN_13" || 32:
@@ -418,6 +422,59 @@ function checkTypeContentCodebar(typeCode) {
       return 0;
   }
 
+}
+
+/**
+ * Group items by selected key and ordered them by selected key for SectionList Data.{title:'', data: ''}
+ * items ordered by most recently hour.
+ *
+ * @return object collection {data, title}
+ *
+ * @params data: object[], groupedKey: string, orderedKey: string
+ *
+ * */
+
+function orderedDataSectionList(data: History[], groupedKey: string, orderedKey: string): History[] {
+  const grouped: {} = data.reduce((acc, item) => {
+    const _date: string = item[groupedKey];
+    acc[_date]
+      ? acc[_date].data.push(item)
+      : acc[_date] = { title: _date, data: [item] };
+    // change 'a' and 'b' order for reverse order.
+    acc[_date].data.sort((a, b) => b[orderedKey].localeCompare(a[orderedKey]));
+    return acc;
+  }, {});
+  return Object.values(grouped);
+};
+
+/**
+ *  Alert for user action.
+ *
+ *  @return void
+ *
+ *  @params title: string, mssg: string, func: function
+ *
+ * */
+function createTwoButtonAlert(title: string, mssg: string, func: any): void {
+  Alert.alert(title, mssg, [
+    {
+      text: i18n.t("generic.cancel"),
+      onPress: () => null,
+      style: "cancel"
+    },
+    { text: "OK", onPress: () => func() }
+  ]);
+}
+
+/**
+ *
+ *
+ *
+ *
+ * */
+function filterTypeContent(dataHistory: History[], filterValue: number): History[] {
+  const filtered_items: History[] = dataHistory.filter(item => item.content.type === filterValue);
+  return orderedDataSectionList(filtered_items, "date", "hour");
 }
 
 export {
@@ -441,7 +498,10 @@ export {
   isCheckedUrl,
   isURL,
   isNumber,
-  checkTypeContentCodebar
+  checkTypeContentCodebar,
+  orderedDataSectionList,
+  createTwoButtonAlert,
+  filterTypeContent
 };
 
 const no_qr = [

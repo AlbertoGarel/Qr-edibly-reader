@@ -3,14 +3,14 @@ import Barcode, { BarcodeProps } from "react-native-barcode-builder";
 import { HEIGHT_BREACKPOINT_DEVICES, WINDOW_HEIGHT } from "../../constants/expoConstants";
 import BarcodeCreatorViewManager, { BarcodeFormat } from "react-native-barcode-creator";
 
-type LayoutData = {
+interface LayoutData {
   height: number,
   width: number,
   x: number,
   y: number
 }
 
-type Props = {
+interface Props {
   value: string,
   format: any,
   layoutData: LayoutData

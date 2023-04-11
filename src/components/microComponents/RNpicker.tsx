@@ -1,9 +1,16 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, ImageURISource } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "@react-navigation/native";
 import i18n from "../../translate";
 
-const RNpicker = ({ dataPickers, icon, data, handler }) => {
+interface RNpickerProp {
+  dataPickers: any
+  icon: ImageURISource | ImageURISource[]
+  data: string | number
+  handler: (itemValue: string) => void
+}
+
+const RNpicker = ({ dataPickers, icon, data, handler }: RNpickerProp) => {
   const { dark, colors } = useTheme();
   return (
     <View>
@@ -17,7 +24,7 @@ const RNpicker = ({ dataPickers, icon, data, handler }) => {
         style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0 }}
         mode={"dialog"}
         onValueChange={(itemValue, itemIndex) =>
-          handler(itemValue + data)
+          handler(`${itemValue}${data}`)
         }>
         <Picker.Item label={i18n.t("contextual.engines_dialog")} value={null} enabled={false}
                      color={colors.background} />

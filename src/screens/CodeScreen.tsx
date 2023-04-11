@@ -155,7 +155,10 @@ const CodeScreen = ({ route }) => {
                                         code: route.params.code,
                                         drawicons: action_icons.map(i => drawer_ico[i])
                                       }}
-                                      redux_element={redux_element}
+                                      redux_element={{
+                                        ...redux_element,
+                                        content: {...redux_element.content , type: text_ico.contentType},
+                                      }}
         />;
       default:
         //CREATE USER INFO COMPONENT

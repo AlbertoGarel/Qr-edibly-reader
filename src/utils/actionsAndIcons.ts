@@ -1,4 +1,5 @@
 import { check_type_linealbarcode_content, getType_EAN_13 } from "./utils";
+import { ImageSourcePropType } from "react-native";
 
 const drawerActions = {
   lineal_barcodes: {
@@ -22,45 +23,49 @@ const  search_engines: {name: string, url: string}[] = [
   {name: 'Aol', url: 'https://search.aol.com/aol/search?q='}
 ]
 
-function barcodelineal_icon_text_Header(dark: boolean, param: string, data_type: string) {
-  let type_content_code = check_type_linealbarcode_content(param);
+function barcodelineal_icon_text_Header(dark: boolean, param: string, data_type: string): {ico: ImageSourcePropType, text: string, type: string, contentType: number} {
+  let {typestring, typenumber} = check_type_linealbarcode_content(param);
 
   let type_lineal_barcode = data_type;
   if (parseInt(data_type) === 32) {
     type_lineal_barcode = getType_EAN_13(data_type);
   }
-  switch (type_content_code) {
+  switch (typestring) {
     case "text":
       return {
         ico: dark
           ? require("../assets/images/texto_icon_light.png")
           : require("../assets/images/texto_icon_dark.png"),
-        text: type_content_code,
-        type: type_lineal_barcode
+        text: typestring,
+        type: type_lineal_barcode,
+        contentType: typenumber
       };
     case "product":
       return {
         ico: dark
           ? require("../assets/images/producto_light.png")
           : require("../assets/images/producto_dark.png"),
-        text: type_content_code,
-        type: type_lineal_barcode
+        text: typestring,
+        type: type_lineal_barcode,
+        contentType: typenumber
       };
     case "book":
       return {
         ico: dark
           ? require("../assets/images/book_shop_light.png")
           : require("../assets/images/book_shop_dark.png"),
-        text: type_content_code,
-        type: "ISBN"
+        text: typestring,
+        type: "ISBN",
+        contentType: typenumber
       };
     default:
       return {
         ico: dark
           ? require("../assets/images/unknow_icon_light.png")
           : require("../assets/images/unknow_icon_dark.png"),
-        text: type_content_code,
-        type: "Unknow"
+        text: typestring,
+        type: "Unknow",
+        contentType: -1
       };
   }
 }
