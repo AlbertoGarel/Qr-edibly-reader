@@ -1,6 +1,6 @@
 import Clipboard from "@react-native-clipboard/clipboard";
 import { Alert, ImageURISource, Linking, Share, ShareAction, ToastAndroid, Vibration } from "react-native";
-import { ONE_SECOND_IN_MS } from "../constants/expoConstants";
+import { ONE_SECOND_IN_MS, VIBRATION_PATTERN } from "../constants/expoConstants";
 import i18n from "../translate";
 import * as Sharing from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
@@ -467,15 +467,33 @@ function createTwoButtonAlert(title: string, mssg: string, func: any): void {
 }
 
 /**
+ *  return SectionList data filtered by type of content (url, text, product...)
  *
+ * @return array collection [{title: string, data: History[]}]
  *
- *
+ * @params dataHistory: History[], filterValue: number
  *
  * */
 function filterTypeContent(dataHistory: History[], filterValue: number): History[] {
   const filtered_items: History[] = dataHistory.filter(item => item.content.type === filterValue);
   return orderedDataSectionList(filtered_items, "date", "hour");
 }
+
+/**
+ * Unify sound and vibration effects with action function in one function.
+ *
+ * @return void
+ *
+ * @params actionFunction: Function, vibration: boolean, sound: boolean
+ *
+ * */
+
+function handlerActionAndEffects(actionFunction: Function, vibration: boolean, sound: boolean): void {
+  if (vibration) simpleVibrated(.2);
+  if (sound) console.log("sound");
+  actionFunction();
+}
+
 
 export {
   // playSound,
@@ -501,7 +519,8 @@ export {
   checkTypeContentCodebar,
   orderedDataSectionList,
   createTwoButtonAlert,
-  filterTypeContent
+  filterTypeContent,
+  handlerActionAndEffects
 };
 
 const no_qr = [

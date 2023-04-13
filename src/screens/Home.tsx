@@ -13,7 +13,6 @@ import RoundedButton from "../components/microComponents/RoundedButton";
 import { useTheme } from "@react-navigation/native";
 import * as Font from "expo-font";
 import LastSearch from "../components/LastSearch";
-import RNpicker from "../components/microComponents/RNpicker";
 import * as React from "react";
 import { connect } from "react-redux";
 import { AppState } from "@App/store/types";
@@ -21,7 +20,7 @@ import { useFocusEffect } from "@react-navigation/native";
 
 
 type State = {
-  lupa: boolean, bookmark: boolean, bug: boolean, settings: boolean
+  history: boolean, favourites: boolean, bug: boolean, settings: boolean
 }
 
 const Home = ({ navigation, last }) => {
@@ -30,8 +29,8 @@ const Home = ({ navigation, last }) => {
 
   const [pressed, setPressed] = useState<boolean>(false);
   const [squarepressed, setSquarePressed] = useState<State>({
-    lupa: false,
-    bookmark: false,
+    history: false,
+    favourites: false,
     bug: false,
     settings: false
   });
@@ -82,7 +81,7 @@ const Home = ({ navigation, last }) => {
         [identifier]: value
       };
     });
-    navigation.navigate(identifier);
+    if (!value) navigation.navigate(identifier);
   };
 
   const renderSquaresPressables = [
@@ -90,13 +89,13 @@ const Home = ({ navigation, last }) => {
       image_src: require("../assets/images/history.png"),
       func_press: squares_pressable,
       identifier: "history",
-      press_state: squarepressed.lupa
+      press_state: squarepressed.history
     },
     {
       image_src: require("../assets/images/bookmark_full_dark.png"),
       func_press: squares_pressable,
       identifier: "favourites",
-      press_state: squarepressed.bookmark
+      press_state: squarepressed.favourites
     },
     {
       image_src: require("../assets/images/bug.png"),

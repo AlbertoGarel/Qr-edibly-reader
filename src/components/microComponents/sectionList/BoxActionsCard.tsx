@@ -37,10 +37,6 @@ const BoxActionsCard = ({
     });
   }
 
-  React.useEffect(()=> {
-    console.log(typeof onDeleteItemById)
-  },[])
-
   function handler_favorite(): void {
     let txt: string = "";
     if (!isFavourite) {
@@ -71,17 +67,17 @@ const BoxActionsCard = ({
           _onPress={handler_favorite} margin={icon_margin} />
         {
           onDeleteItemById !== null
-          ? <TouchableOpacityicon
-            image_width={icon_measure}
-            image_height={icon_measure}
-            src_image={dark
-              ? require("../../../assets/images/delete_light.png")
-              : require("../../../assets/images/delete_dark.png")
-            }
-            _onPress={() => createTwoButtonAlert(i18n.t("generic.delete"), i18n.t("contextual.item_delete"), () => onDeleteItemById(item.id))}
-            margin={icon_margin} />
-          :
-          null
+            ? <TouchableOpacityicon
+              image_width={icon_measure}
+              image_height={icon_measure}
+              src_image={dark
+                ? require("../../../assets/images/delete_light.png")
+                : require("../../../assets/images/delete_dark.png")
+              }
+              _onPress={() => createTwoButtonAlert(i18n.t("generic.delete"), i18n.t("contextual.item_delete"), () => onDeleteItemById(item.id))}
+              margin={icon_margin} />
+            :
+            null
         }
         <TouchableOpacityicon
           image_width={icon_measure}

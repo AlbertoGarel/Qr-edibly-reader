@@ -1,19 +1,29 @@
-import { View, Text, Image, ImageURISource } from "react-native";
+import { View, Pressable, Image, ImageURISource } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "@react-navigation/native";
 import i18n from "../../translate";
+import { handlerActionAndEffects } from "../../utils/utils";
+import { AppState, SettingsInUseState } from "@App/store/types";
+import { connect } from "react-redux";
 
 interface RNpickerProp {
   dataPickers: any
   icon: ImageURISource | ImageURISource[]
   data: string | number
   handler: (itemValue: string) => void
+  selectedSettings: SettingsInUseState
 }
 
-const RNpicker = ({ dataPickers, icon, data, handler }: RNpickerProp) => {
+const RNpicker = ({ selectedSettings, dataPickers, icon, data, handler }: RNpickerProp) => {
   const { dark, colors } = useTheme();
+  const { buttonVibration, buttonSound } = selectedSettings[0];
+
+  function handlerPress() {
+    handlerActionAndEffects(() => null, buttonVibration, buttonSound);
+  }
+
   return (
-    <View>
+    <Pressable onPress={handlerPress}>
       <Image source={icon} style={{
         resizeMode: "contain",
         width: 30,
@@ -34,7 +44,15 @@ const RNpicker = ({ dataPickers, icon, data, handler }: RNpickerProp) => {
           })
         }
       </Picker>
-    </View>
+    </Pressable>
   );
 };
-export default RNpicker;
+
+const mapStateToProps = (state: AppState) => ({
+  selectedSettings: state.usedSettings
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(RNpicker);

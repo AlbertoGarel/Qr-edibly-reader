@@ -51,7 +51,7 @@ const HistoryScreen = ({
 
   React.useEffect((): () => void => {
     let isMounted = true;
-console.log('history', history)
+
     if (isMounted) {
       // orederd for most recently date and serach by type if filterValue exist
       filterValue > 0

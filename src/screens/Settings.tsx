@@ -10,6 +10,8 @@ import { addTheme } from "../store/themes/actions";
 import { addSettings } from "../store/settings/action";
 import i18n from "../translate";
 import uuid from "react-native-uuid";
+import { handlerActionAndEffects } from "../utils/utils";
+import React from "react";
 
 type Props = {
   selectedSettings: SettingsInUseState,
@@ -18,7 +20,16 @@ type Props = {
 
 const Settings = ({ onAddSettings, selectedSettings }: Props) => {
     const { colors } = useTheme();
-    const settings = selectedSettings;
+    const {
+      buttonSound,
+      buttonVibration,
+      camera,
+      copyClipboard,
+      history,
+      openAutoURL,
+      scannerSound,
+      scannerVibration
+    } = selectedSettings[0];
 
     const DATA = [
       {
@@ -35,8 +46,8 @@ const Settings = ({ onAddSettings, selectedSettings }: Props) => {
         itemData: [
           {
             title: "contextual.vibration_button",// i18n key
-            value: settings[0].buttonVibration,
-            action: { buttonVibration: !settings[0].buttonVibration },
+            value: buttonVibration,
+            action: { buttonVibration: !buttonVibration },
             predefValue: true
           }
         ]
@@ -46,8 +57,8 @@ const Settings = ({ onAddSettings, selectedSettings }: Props) => {
         itemData: [
           {
             title: "contextual.sound_button",
-            value: settings[0].buttonSound,
-            action: { buttonSound: !settings[0].buttonSound },
+            value: buttonSound,
+            action: { buttonSound: !buttonSound },
             predefValue: false
           }
         ]
@@ -57,8 +68,8 @@ const Settings = ({ onAddSettings, selectedSettings }: Props) => {
         itemData: [
           {
             title: "contextual.scan_vibration",
-            value: settings[0].scannerVibration,
-            action: { scannerVibration: !settings[0].scannerVibration },
+            value: scannerVibration,
+            action: { scannerVibration: !scannerVibration },
             predefValue: false
           }
         ]
@@ -68,8 +79,8 @@ const Settings = ({ onAddSettings, selectedSettings }: Props) => {
         itemData: [
           {
             title: "contextual.scan_sound",
-            value: settings[0].scannerSound,
-            action: { scannerSound: !settings[0].scannerSound },
+            value: scannerSound,
+            action: { scannerSound: !scannerSound },
             predefValue: false
           }
         ]
@@ -79,7 +90,7 @@ const Settings = ({ onAddSettings, selectedSettings }: Props) => {
         itemData: [
           {
             title: "contextual.front_camera",
-            value: settings[0].camera,
+            value: camera,
             action: { camera: "front" },
             predefValue: "front"
           }
@@ -90,7 +101,7 @@ const Settings = ({ onAddSettings, selectedSettings }: Props) => {
         itemData: [
           {
             title: "contextual.rear_camera",
-            value: settings[0].camera,
+            value: camera,
             action: { camera: "back" },
             predefValue: "back"
           }
@@ -102,8 +113,8 @@ const Settings = ({ onAddSettings, selectedSettings }: Props) => {
           {
 
             title: "contextual.add_history",
-            action: { history: !settings[0].history },
-            value: settings[0].history,
+            action: { history: !history },
+            value: history,
             predefValue: true
           }
         ]
@@ -124,7 +135,7 @@ const Settings = ({ onAddSettings, selectedSettings }: Props) => {
               image_bg={is_schemaColors ? i.image : null}
               boxWidth={is_schemaColors ? 50 : 30}
               boxHeight={is_schemaColors ? 50 : 30}
-              _onPress={is_schemaColors ? null : () => onAddSettings(i.action)}
+              _onPress={is_schemaColors ? null : () => handlerActionAndEffects(() => onAddSettings(i.action), buttonVibration, buttonSound)}
               params={is_schemaColors ? null : i.predefValue}
             />
           );
@@ -147,7 +158,7 @@ const Settings = ({ onAddSettings, selectedSettings }: Props) => {
         case "options":
           return (
             <TouchableHighlight underlayColor={colors.background}
-                                onPress={() => onAddSettings(item.itemData[0].action)}>
+                                onPress={() => handlerActionAndEffects(() => onAddSettings(item.itemData[0].action), buttonVibration, buttonSound)}>
               <View
                 style={{
                   ...styles_sheet.rowBetween, ...styles.listableItems,

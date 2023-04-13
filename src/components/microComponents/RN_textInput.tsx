@@ -2,15 +2,28 @@ import { StyleSheet, View, TextInput } from "react-native";
 import * as React from "react";
 import { useTheme } from "@react-navigation/native";
 import i18n from "../../translate";
+import { connect } from "react-redux";
+import { AppState, SettingsInUseState } from "../../store/types";
+import { handlerActionAndEffects } from "../../utils/utils";
 
-const RN_textInput = () => {
+interface RN_textInputProps {
+  selectedSettings: SettingsInUseState
+}
+
+const RN_textInput = ({ selectedSettings }: RN_textInputProps) => {
   const { dark, colors } = useTheme();
+  const { buttonVibration, buttonSound } = selectedSettings[0];
+
+  function handlerPress() {
+    handlerActionAndEffects(() => null, buttonVibration, buttonSound);
+  }
 
   const [value, onChangeText] = React.useState(i18n.t("contextual.input_name_placeholder"));
   return (
     <View
       style={[styles.container, { backgroundColor: value, borderBottomColor: colors.border }]}>
       <TextInput
+        onFocus={handlerPress}
         editable
         numberOfLines={1}
         maxLength={50}
@@ -21,7 +34,16 @@ const RN_textInput = () => {
     </View>
   );
 };
-export default RN_textInput;
+
+const mapStateToProps = (state: AppState) => ({
+  selectedSettings: state.usedSettings
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(RN_textInput);
+
 const styles = StyleSheet.create({
   container: {
     borderBottomWidth: 1,

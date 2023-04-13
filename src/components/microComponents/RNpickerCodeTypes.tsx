@@ -1,35 +1,29 @@
-import { View, Text, Image, ImageURISource, ImageStyle } from "react-native";
+import { View, Pressable, Image, ImageURISource, ImageStyle } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "@react-navigation/native";
 import i18n from "../../translate";
-
-const PICKER_ITEMS = [
-  { ALL: 0 },
-  { CONTACT_INFO: 1 }, // [] ** no recognize from image  **
-  { EMAIL: 2 },//mailto: ?subjet= &body= +=> whitespace
-  { ISBN: 3 },  // if data.length is 13 and type 32
-  { PHONE: 4 }, //  "tel:66666666"
-  { PRODUCT: 5 }, // no qr code
-  { SMS: 6 }, //  "sms:666666666?body=mensaje de texto sms"
-  { TEXT: 7 }, // "esto es un texto"
-  { URL: 8 }, //  "http://albertogarel.com"
-  { WIFI: 9 }, // "WIFI:T:WPA;P:Y8Z6JKTKKMHRWS;S:Lowi0927;H:false;"
-  { GEO: 10 }, //  "geo:653897.0,6549494.0?q=consulta" latitud=>longitud=>texto
-  { CALENDAR_EVENT: 11 }, // [] ** no recognize from image  ** . barcode scanner response is Array 2 length. get first.
-  { DRIVER_LICENSE: 12 }  // unknow
-];
+import { AppState, SettingsInUseState } from "../../store/types";
+import { connect } from "react-redux";
+import { handlerActionAndEffects } from "../../utils/utils";
+import { PICKER_ITEMS } from "../../constants/expoConstants";
 
 interface RNpickerProp {
   icon: ImageURISource | ImageURISource[]
   styleIcon: ImageStyle
   handlerFilter: (itemValue: number) => void
+  selectedSettings: SettingsInUseState
 }
 
-const RNpickerCodeTypes = ({ icon, styleIcon, handlerFilter }: RNpickerProp) => {
+const RNpickerCodeTypes = ({ selectedSettings, icon, styleIcon, handlerFilter }: RNpickerProp) => {
   const { dark, colors } = useTheme();
+  const { buttonVibration, buttonSound } = selectedSettings[0];
+
+  function handlerPress() {
+    handlerActionAndEffects(() => null, buttonVibration, buttonSound);
+  }
 
   return (
-    <View>
+    <Pressable onPress={handlerPress}>
       <Image source={icon} style={{
         resizeMode: "contain",
         ...styleIcon
@@ -50,7 +44,15 @@ const RNpickerCodeTypes = ({ icon, styleIcon, handlerFilter }: RNpickerProp) => 
           })
         }
       </Picker>
-    </View>
+    </Pressable>
   );
 };
-export default RNpickerCodeTypes;
+
+const mapStateToProps = (state: AppState) => ({
+  selectedSettings: state.usedSettings
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(RNpickerCodeTypes);
