@@ -1,4 +1,4 @@
-import { View, Pressable, Image, ImageURISource, ImageStyle } from "react-native";
+import { Pressable, Image, ImageURISource, ImageStyle } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "@react-navigation/native";
 import i18n from "../../translate";
@@ -6,6 +6,7 @@ import { AppState, SettingsInUseState } from "../../store/types";
 import { connect } from "react-redux";
 import { handlerActionAndEffects } from "../../utils/utils";
 import { PICKER_ITEMS } from "../../constants/expoConstants";
+import { useSound } from "../../hooks/useSound";
 
 interface RNpickerProp {
   icon: ImageURISource | ImageURISource[]
@@ -17,9 +18,14 @@ interface RNpickerProp {
 const RNpickerCodeTypes = ({ selectedSettings, icon, styleIcon, handlerFilter }: RNpickerProp) => {
   const { dark, colors } = useTheme();
   const { buttonVibration, buttonSound } = selectedSettings[0];
+  const playSound = useSound();
 
-  function handlerPress() {
-    handlerActionAndEffects(() => null, buttonVibration, buttonSound);
+  async function HandlerSoundButton() {
+    return buttonSound ? await playSound() : () => null;
+  }
+
+  async function handlerPress() {
+    await handlerActionAndEffects(() => null, buttonVibration, HandlerSoundButton);
   }
 
   return (

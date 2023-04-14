@@ -1,9 +1,8 @@
 import { View, Text, StyleSheet, TouchableHighlight, Image } from "react-native";
 import { HEIGHT_BREACKPOINT_DEVICES, WINDOW_HEIGHT } from "../constants/expoConstants";
 import { useTheme } from "@react-navigation/native";
-import { medium_fontSize, padding, rounded_less, styles_sheet } from "../constants/styles_sheet";
+import { padding, rounded_less, styles_sheet } from "../constants/styles_sheet";
 import i18n from "../translate";
-import React, { useEffect } from "react";
 import ListedPill from "../components/microComponents/ListedPill";
 import { History } from "../store/types";
 
@@ -74,7 +73,8 @@ const LastSearch = ({ handlerRoute, last }: Props) => {
                   </Text>
                   <ListedPill isListed={last.listed} />
                 </View>
-                <Text style={{ ...styles_sheet.firstText, color: colors.primary }}>{i18n.t("contextual.content")}:</Text>
+                <Text
+                  style={{ ...styles_sheet.firstText, color: colors.primary }}>{i18n.t("contextual.content")}:</Text>
                 <Text style={{ ...styles.contentText, ...styles_sheet.secondText, color: colors.text }}
                       numberOfLines={1}
                 >{last.rawValue}</Text>

@@ -1,10 +1,10 @@
-import { View, Vibration, ImageBackground, TouchableHighlight, Image, StyleSheet } from "react-native";
+import { ImageBackground, TouchableHighlight, Image, StyleSheet } from "react-native";
 import { styles_sheet } from "../../constants/styles_sheet";
 import { BREACKPOINT_DEVICES, WINDOW_WIDTH } from "../../constants/expoConstants";
 import { handlerActionAndEffects, simpleVibrated } from "../../utils/utils";
 import { AppState, SettingsInUseState } from "@App/store/types";
 import { connect } from "react-redux";
-import { useEffect } from "react";
+import { useSound } from "../../hooks/useSound";
 
 type Props = {
   pressed: boolean,
@@ -14,17 +14,18 @@ type Props = {
 
 const RoundedButton = ({ selectedSettings, pressed, press_func }: Props) => {
   const { buttonVibration, buttonSound } = selectedSettings[0];
+  const playSound = useSound();
 
-  useEffect(()=>{
-    console.log('state square', pressed)
-  },[]);
-
-  function handlerPressOn() {
-    handlerActionAndEffects(() => press_func(true), buttonVibration, buttonSound);
+  async function HandlerSoundButton() {
+    return buttonSound ? await playSound() : () => null;
   }
 
-  function handlerPressOut() {
-    handlerActionAndEffects(() => press_func(false), buttonVibration, buttonSound);
+  async function handlerPressOn() {
+    await handlerActionAndEffects(() => press_func(true), buttonVibration, HandlerSoundButton);
+  }
+
+  async function handlerPressOut() {
+    await handlerActionAndEffects(() => press_func(false), buttonVibration, () => null);
   }
 
   return (

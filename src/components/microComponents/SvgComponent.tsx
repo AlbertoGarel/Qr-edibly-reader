@@ -2,7 +2,7 @@ import React from "react";
 import { SvgXml } from "react-native-svg";
 import { ImageURISource } from "react-native";
 
-interface Prop {
+interface Props {
   svgData: ImageURISource | ImageURISource[]
   svgWidth: number
   svgHeight: number
@@ -11,10 +11,10 @@ interface Prop {
 
 function SvgComponent({
                         svgData, svgWidth, svgHeight, color = "#000000"
-                      }) {
+                      }: Props) {
   const svgContent = svgData;
 
-  const ToSVGXML = () => <SvgXml xml={svgContent} width={svgWidth}
+  const ToSVGXML = () => <SvgXml xml={svgContent.toString()} width={svgWidth}
                                  height={svgHeight} fill={color} />;
   return <ToSVGXML />;
 }

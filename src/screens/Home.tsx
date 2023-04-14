@@ -120,9 +120,7 @@ const Home = ({ navigation, last }) => {
       >
         <View
           style={[styles_sheet.centerCenter]}>
-          <Title
-            title={"powered by:"} isDark={dark}
-          />
+          <Title />
         </View>
         <View
           style={[styles_sheet.centerCenter, {

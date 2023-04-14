@@ -1,8 +1,9 @@
 import { TouchableOpacity, View, Text, Image, ImageURISource, ImageRequireSource } from "react-native";
-import { padding, styles_sheet } from "../../constants/styles_sheet";
+import { styles_sheet } from "../../constants/styles_sheet";
 import { connect } from "react-redux";
 import { AppState, SettingsInUseState } from "@App/store/types";
 import { handlerActionAndEffects } from "../../utils/utils";
+import { useSound } from "../../hooks/useSound";
 
 type Props = {
   src_image: ImageURISource | ImageURISource[] | ImageRequireSource,
@@ -15,9 +16,14 @@ type Props = {
 
 const TouchableOpacityicon = ({ selectedSettings, src_image, image_height, image_width, margin, _onPress }: Props) => {
   const { buttonSound, buttonVibration } = selectedSettings[0];
+  const playSound = useSound();
 
-  function handlerPress() {
-    handlerActionAndEffects(_onPress, buttonVibration, buttonSound);
+  async function HandlerSoundButton() {
+    return buttonSound ? await playSound() : () => null;
+  }
+
+  async function handlerPress() {
+    await handlerActionAndEffects(_onPress, buttonVibration, HandlerSoundButton);
   }
 
   return (

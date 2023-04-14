@@ -7,7 +7,7 @@ import TitleItem from "../components/TitleItem";
 import DrawerIconsItem from "../components/DrawerIconsItem";
 import ContentItem from "../components/ContentItem";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { handler_linking_url, isURL, pullApartDateString } from "../utils/utils";
+import { handler_linking_url } from "../utils/utils";
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import { AppState, History } from "@App/store/types";
@@ -43,8 +43,9 @@ const LinealBarcodesElement = ({
     let isMounted = true;
 
     if (image && isMounted) {
+      // add history option conditional from options.
       onAddHistory(redux_element);
-    };
+    }
 
     return () => isMounted = false;
   }, []);

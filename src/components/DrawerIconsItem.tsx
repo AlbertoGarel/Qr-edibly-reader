@@ -22,7 +22,7 @@ const square_face_small = WINDOW_WIDTH * .20;
 
 type Props = {
   handler: (url: string) => void,
-  data: string[],
+  data: string,
   drawicons: Content_elements_actions[]
 }
 

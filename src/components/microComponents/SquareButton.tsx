@@ -11,6 +11,7 @@ import { BREACKPOINT_DEVICES, WINDOW_WIDTH } from "../../constants/expoConstants
 import { handlerActionAndEffects } from "../../utils/utils";
 import { AppState, SettingsInUseState } from "../../store/types";
 import { connect } from "react-redux";
+import { useSound } from "../../hooks/useSound";
 
 type Props = {
   readonly image_src: ImageURISource | ImageURISource[] | ImageRequireSource,
@@ -22,13 +23,18 @@ type Props = {
 
 const SquareButton = ({ selectedSettings, image_src, func_press, identifier, press_state }: Props) => {
   const { buttonVibration, buttonSound } = selectedSettings[0];
+  const playSound = useSound();
 
-  function handlerPressOn() {
-    handlerActionAndEffects(() => func_press(identifier, true), buttonVibration, buttonSound);
+  async function HandlerSoundButton() {
+    return buttonSound ? await playSound() : () => null;
   }
 
-  function handlerPressOut() {
-    handlerActionAndEffects(() => func_press(identifier, false), buttonVibration, buttonSound);
+  async function handlerPressOn() {
+    await handlerActionAndEffects(() => func_press(identifier, true), buttonVibration, HandlerSoundButton);
+  }
+
+  async function handlerPressOut() {
+    await handlerActionAndEffects(() => func_press(identifier, false), buttonVibration, () => null);
   }
 
   return (

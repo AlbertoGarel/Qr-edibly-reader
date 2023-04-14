@@ -5,6 +5,7 @@ import i18n from "../../translate";
 import { connect } from "react-redux";
 import { AppState, SettingsInUseState } from "../../store/types";
 import { handlerActionAndEffects } from "../../utils/utils";
+import { useSound } from "../../hooks/useSound";
 
 interface RN_textInputProps {
   selectedSettings: SettingsInUseState
@@ -13,9 +14,14 @@ interface RN_textInputProps {
 const RN_textInput = ({ selectedSettings }: RN_textInputProps) => {
   const { dark, colors } = useTheme();
   const { buttonVibration, buttonSound } = selectedSettings[0];
+  const playSound = useSound();
 
-  function handlerPress() {
-    handlerActionAndEffects(() => null, buttonVibration, buttonSound);
+  async function HandlerSoundButton() {
+    return buttonSound ? await playSound() : () => null;
+  }
+
+  async function handlerPress() {
+    await handlerActionAndEffects(() => null, buttonVibration, HandlerSoundButton);
   }
 
   const [value, onChangeText] = React.useState(i18n.t("contextual.input_name_placeholder"));

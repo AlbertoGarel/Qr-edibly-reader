@@ -1,7 +1,7 @@
-import { StyleSheet, View, Image, Animated, Text, LayoutRectangle } from "react-native";
+import { StyleSheet, View, Image, Animated, LayoutRectangle } from "react-native";
 import { padding, styles_sheet } from "../constants/styles_sheet";
 import * as React from "react";
-import { QR_LAYOUT, WINDOW_HEIGHT, WINDOW_WIDTH } from "../constants/expoConstants";
+import { QR_LAYOUT, WINDOW_WIDTH } from "../constants/expoConstants";
 import { useTheme } from "@react-navigation/native";
 import TouchableOpacityicon from "../components/microComponents/TouchableOpacityIcon";
 import { handleSave_image_to_gallery, sharing_content, showToastWithGravity } from "../utils/utils";
@@ -11,10 +11,6 @@ import ViewShot from "react-native-view-shot";
 import i18n from "../translate";
 import { connect } from "react-redux";
 import { AppState } from "@App/store/types";
-import { Dispatch } from "redux";
-import { addHistory } from "../store/history/actions";
-import { changeStateFavourite } from "../store/favourites/actions";
-import { barcodeFormat } from "../constants/barcodes_values";
 import BarcodeBuilder from "../components/BarcodeBuilder";
 import { History } from "../store/types";
 
@@ -29,6 +25,7 @@ interface ImageProps {
   width: number,
 
 }
+
 type Props = {
   image: any,
   element_id: string,
@@ -59,7 +56,7 @@ const AnimationImage = ({
   const [viewImage, setViewImage] = React.useState<string | null>(image);
 
   React.useEffect(() => {
-    console.log('image', image)
+    console.log("image", image);
     try {
       const exist_Favourite: History | object[] = favourite.filter((element: History) => element.id === element_id);
       setBookmark(!!exist_Favourite.length);

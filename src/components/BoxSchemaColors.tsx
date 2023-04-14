@@ -4,19 +4,19 @@ import {
   Image,
   ImageBackground,
   ImageURISource,
-  ImageRequireSource, TouchableHighlight, GestureResponderEvent
+  ImageRequireSource,
+  TouchableHighlight
 } from "react-native";
-import { rounded, styles_sheet } from "../constants/styles_sheet";
+import { rounded } from "../constants/styles_sheet";
 import { WINDOW_WIDTH } from "../constants/expoConstants";
 import { connect } from "react-redux";
 import { AppState, SettingsInUseState, ThemesInUseState } from "../store/types";
 import { Dispatch } from "redux";
 import { addTheme } from "../store/themes/actions";
 import { custom_themes } from "../themes/themes";
-import Settings from "../screens/Settings";
 import { useTheme } from "@react-navigation/native";
-import uuid from "react-native-uuid";
 import { handlerActionAndEffects } from "../utils/utils";
+import { useSound } from "../hooks/useSound";
 
 type Props = {
   boxWidth: number
@@ -50,6 +50,11 @@ const BoxSchemaColors = ({
 
   const { dark, colors } = useTheme();
   const { buttonSound, buttonVibration } = usedSettings[0];
+  const playSound = useSound();
+
+  async function HandlerSoundButton() {
+    return buttonSound ? await playSound() : () => null;
+  }
 
   const is_equal = theme[0].name === name_theme;
   const selected = custom_themes.filter(i => i.name === name_theme)[0];
@@ -59,7 +64,7 @@ const BoxSchemaColors = ({
 
   return (
     <TouchableHighlight
-      onPress={!_onPress ? () => handlerActionAndEffects(() => onAddTheme({ ...selected }), buttonVibration, buttonSound) : _onPress}
+      onPress={!_onPress ? () => handlerActionAndEffects(() => onAddTheme({ ...selected }), buttonVibration, HandlerSoundButton) : _onPress}
       activeOpacity={0.6}
       underlayColor="transparent"
       style={{

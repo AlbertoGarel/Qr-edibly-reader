@@ -2,7 +2,7 @@ import { StyleSheet, View, Text, ImageURISource } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import { useHeaderHeight } from "@react-navigation/elements";
 import TouchableOpacityicon from "../microComponents/TouchableOpacityIcon";
-import { padding, styles_sheet } from "../../constants/styles_sheet";
+import { styles_sheet } from "../../constants/styles_sheet";
 import { createTwoButtonAlert } from "../../utils/utils";
 import i18n from "../../translate";
 import React, { Dispatch } from "react";

@@ -482,16 +482,24 @@ function filterTypeContent(dataHistory: History[], filterValue: number): History
 /**
  * Unify sound and vibration effects with action function in one function.
  *
- * @return void
+ * @return Promise<void>
  *
- * @params actionFunction: Function, vibration: boolean, sound: boolean
+ * @params actionFunction: Function, vibration: boolean, sound: Function
  *
  * */
 
-function handlerActionAndEffects(actionFunction: Function, vibration: boolean, sound: boolean): void {
-  if (vibration) simpleVibrated(.2);
-  if (sound) console.log("sound");
-  actionFunction();
+async function handlerActionAndEffects(actionFunction: Function, vibration: boolean, sound: Function): Promise<void> {
+  try {
+    if (vibration) simpleVibrated(.2);
+    if (sound) {
+      await sound();
+      setTimeout(() => actionFunction(), 200);
+    } else {
+      actionFunction();
+    }
+  } catch (err) {
+    if (__DEV__) console.log("sound reproduction error");
+  }
 }
 
 

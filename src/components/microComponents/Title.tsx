@@ -1,18 +1,10 @@
-import { Image, StyleSheet, Text, View } from "react-native";
-import { HEIGHT_BREACKPOINT_DEVICES, WINDOW_HEIGHT, WINDOW_WIDTH } from "../../constants/expoConstants";
-import { useFonts } from "expo-font";
-import { useEffect, useState } from "react";
-import * as Font from "expo-font";
+import { Image, StyleSheet, Text } from "react-native";
+import { HEIGHT_BREACKPOINT_DEVICES, WINDOW_HEIGHT } from "../../constants/expoConstants";
 import { styles_sheet } from "../../constants/styles_sheet";
 import { useTheme } from "@react-navigation/native";
 import i18n from "../../translate";
 
-type Props = {
-  title: string,
-  isDark: boolean
-};
-
-const Title = ({ title, isDark }: Props) => {
+const Title = () => {
   const { dark, colors } = useTheme();
 
   return (

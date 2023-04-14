@@ -8,8 +8,8 @@ import {
   StyleSheet,
   Image, ImageURISource
 } from "react-native";
-import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../../constants/expoConstants";
-import { padding, styles_sheet } from "../../constants/styles_sheet";
+import { WINDOW_HEIGHT } from "../../constants/expoConstants";
+import { styles_sheet } from "../../constants/styles_sheet";
 import { useTheme } from "@react-navigation/native";
 
 interface LayoutData {

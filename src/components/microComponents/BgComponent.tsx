@@ -4,7 +4,7 @@ import SvgComponent from "./SvgComponent";
 
 interface BgComponentProps {
   svgOptions: { svgData: ImageURISource | ImageURISource[]; svgWidth: number; svgHeight: number; color?: string; }
-  styleOptions:  ViewStyle
+  styleOptions: ViewStyle
 }
 
 const BgComponent = ({ svgOptions, styleOptions }: BgComponentProps) => {
