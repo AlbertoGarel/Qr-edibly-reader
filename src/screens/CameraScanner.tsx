@@ -24,6 +24,8 @@ import { BarCodeScanner, BarCodeScannerResult, Constants } from "expo-barcode-sc
 import { ImagePickerResult } from "expo-image-picker";
 import { getBarcodeValuesTypes_qr, response_object, simpleVibrated } from "../utils/utils";
 import { BarcodeValueTypes } from "../constants/barcodes_values";
+import ModalComponent from "../components/ModalComponent";
+import i18n from "../translate";
 
 
 const CameraScanner = ({ navigation, camera_position, scanner_sound, scanner_vibration }) => {
@@ -40,10 +42,12 @@ const CameraScanner = ({ navigation, camera_position, scanner_sound, scanner_vib
     [BarcodeFormat.ALL_FORMATS],
     { checkInverted: true }
   );
-
-  useEffect(() => {
-    Camera.getCameraPermissionStatus().then(setHasPermission);
-  }, []);
+  const [changeColor, getColor] = React.useState<string>(colors.text);
+  const [mask, getMask] = React.useState<object>({});
+  const [torch_enable, setTorchEnable] = React.useState<"off" | "on">("off");
+  const [sliderValue, setSlidervalue] = React.useState<number>(1);
+  const [barcode_result, setBarcode] = React.useState<Barcode[]>([]);
+  const [norecognize, setNorecognized] = React.useState<boolean>(false);
 
   const width: number = WINDOW_WIDTH;
   const height: number = WINDOW_HEIGHT;
@@ -51,17 +55,24 @@ const CameraScanner = ({ navigation, camera_position, scanner_sound, scanner_vib
   const finderHeight: number = height / 2;
   const viewMinX: number = (width - finderWidth) / 2;
   const viewMinY: number = (height - finderHeight) / 2;
-  const [changeColor, getColor] = React.useState<string>(colors.text);
-  const [mask, getMask] = React.useState<object>({});
-  const [torch_enable, setTorchEnable] = React.useState<"off" | "on">("off");
-  const [sliderValue, setSlidervalue] = React.useState<number>(1);
-  const [barcode_result, setBarcode] = React.useState<Barcode[]>([]);
+  const imagewarning = dark ? require("../assets/images/gallery_light.png") : require("../assets/images/gallery_dark.png");
+
+  useEffect(() => {
+    Camera.getCameraPermissionStatus().then(setHasPermission);
+  }, []);
+
+  function handlePressNoRecognized(): void {
+    setNorecognized(!norecognize);
+  }
 
   React.useEffect((): () => void => {
     let is_Mounted = true;
 
     if (isFocused && is_Mounted) setBarcode([]);
-    if (isFocused) getColor(colors.text);
+    if (isFocused) {
+      getColor(colors.text);
+      setNorecognized(false);
+    }
 
     return () => is_Mounted = false;
   }, [isFocused]);
@@ -74,7 +85,10 @@ const CameraScanner = ({ navigation, camera_position, scanner_sound, scanner_vib
     return () => is_Mounted = false;
   }, [barcodes]);
 
-  React.useEffect(() => {
+
+  React.useEffect((): () => void => {
+    let isMounted = true;
+
     const fisic_resolution = {
       fisic_resolution_width: width * DEVICE_PIXEL_RATIO,
       fisic_resolution_height: height * DEVICE_PIXEL_RATIO,
@@ -114,11 +128,12 @@ const CameraScanner = ({ navigation, camera_position, scanner_sound, scanner_vib
           .catch(err => console.log(err));
 
       } else {
-        getColor(colors.text);
+        if (isMounted) getColor(colors.text);
         //change color stroke
       }
     }
 
+    return () => isMounted = false;
   }, [barcodes]);
 
   const onQRCodeDetected = useCallback(async (code: {}) => {
@@ -220,8 +235,7 @@ const CameraScanner = ({ navigation, camera_position, scanner_sound, scanner_vib
       );
       // RESPONSE IS [] (no recognize) notify success and exit.
       if (!data_image.length) {
-        // add pill notify.
-        console.log("NO SE RECONOCE BARCODE");
+        setNorecognized(true);
         return;
       }
       // BARCODE 'EVENT' CONTAIN SAMES TWO JAVASCRIPT OBJECTS. GET ONE OF THESE..
@@ -260,6 +274,14 @@ const CameraScanner = ({ navigation, camera_position, scanner_sound, scanner_vib
       {device != null &&
       hasPermission && (
         <>
+          {
+            norecognize && <ModalComponent
+              handlePress={handlePressNoRecognized}
+              title={i18n.t("contextual.unrecognized_image")}
+              text={i18n.t("contextual.sure_valid_code")}
+              image={imagewarning}
+            />
+          }
           <Camera focusable
                   ref={camera}
                   style={StyleSheet.absoluteFill}
@@ -304,7 +326,6 @@ const CameraScanner = ({ navigation, camera_position, scanner_sound, scanner_vib
               <TouchableOpacityicon image_height={40}
                                     image_width={40}
                                     margin={padding * 2}
-                // _onPress={() => alert("gallery")}
                                     _onPress={pickImage}
                                     src_image={dark || name !== "light_theme"
                                       ? require("../assets/images/gallery_light.png")
