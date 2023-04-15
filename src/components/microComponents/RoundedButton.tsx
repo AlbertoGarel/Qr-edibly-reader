@@ -5,6 +5,7 @@ import { handlerActionAndEffects, simpleVibrated } from "../../utils/utils";
 import { AppState, SettingsInUseState } from "@App/store/types";
 import { connect } from "react-redux";
 import { useSound } from "../../hooks/useSound";
+import { Sound } from "expo-av/build/Audio/Sound";
 
 type Props = {
   pressed: boolean,
@@ -14,17 +15,17 @@ type Props = {
 
 const RoundedButton = ({ selectedSettings, pressed, press_func }: Props) => {
   const { buttonVibration, buttonSound } = selectedSettings[0];
-  const playSound = useSound();
+  const playSound: () => Promise<void> = useSound();
 
-  async function HandlerSoundButton() {
+  async function HandlerSoundButton(): Promise<Function | void> {
     return buttonSound ? await playSound() : () => null;
   }
 
-  async function handlerPressOn() {
+  async function handlerPressOn(): Promise<void> {
     await handlerActionAndEffects(() => press_func(true), buttonVibration, HandlerSoundButton);
   }
 
-  async function handlerPressOut() {
+  async function handlerPressOut(): Promise<void> {
     await handlerActionAndEffects(() => press_func(false), buttonVibration, () => null);
   }
 

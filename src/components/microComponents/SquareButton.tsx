@@ -23,17 +23,17 @@ type Props = {
 
 const SquareButton = ({ selectedSettings, image_src, func_press, identifier, press_state }: Props) => {
   const { buttonVibration, buttonSound } = selectedSettings[0];
-  const playSound = useSound();
+  const playSound: () => Promise<void> = useSound();
 
-  async function HandlerSoundButton() {
+  async function HandlerSoundButton(): Promise<Function | void> {
     return buttonSound ? await playSound() : () => null;
   }
 
-  async function handlerPressOn() {
+  async function handlerPressOn(): Promise<void> {
     await handlerActionAndEffects(() => func_press(identifier, true), buttonVibration, HandlerSoundButton);
   }
 
-  async function handlerPressOut() {
+  async function handlerPressOut(): Promise<void> {
     await handlerActionAndEffects(() => func_press(identifier, false), buttonVibration, () => null);
   }
 

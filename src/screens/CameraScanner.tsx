@@ -1,7 +1,7 @@
 import { useIsFocused, useTheme } from "@react-navigation/native";
 import * as React from "react";
 import { useCallback, useEffect } from "react";
-import { Dimensions, Platform, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Platform, StyleSheet, Text, Vibration, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Camera, useCameraDevices, useFrameProcessor } from "react-native-vision-camera";
 import { Polygon, Svg } from "react-native-svg";
@@ -22,11 +22,11 @@ import PermissionView from "./PermissionView";
 import * as ImagePicker from "expo-image-picker";
 import { BarCodeScanner, BarCodeScannerResult, Constants } from "expo-barcode-scanner";
 import { ImagePickerResult } from "expo-image-picker";
-import { getBarcodeValuesTypes_qr, response_object } from "../utils/utils";
+import { getBarcodeValuesTypes_qr, response_object, simpleVibrated } from "../utils/utils";
 import { BarcodeValueTypes } from "../constants/barcodes_values";
 
 
-const CameraScanner = ({ navigation, camera_position }) => {
+const CameraScanner = ({ navigation, camera_position, scanner_sound, scanner_vibration }) => {
   // @ts-ignore
   const { name, dark, colors } = useTheme();
   let slider = React.useRef(null);
@@ -94,11 +94,21 @@ const CameraScanner = ({ navigation, camera_position }) => {
         (cornerPoints[1].y >= lty_min) && (cornerPoints[2].y <= lty_max)
       ) {
         getColor("#7CFC00");
+
         onQRCodeDetected(barcode_result)
           .then(response => {
+            if (scanner_vibration) {
+              simpleVibrated(.8);
+            } else {
+              Vibration.cancel();
+            }
+            return response;
+          })
+          .then(second_response => {
             navigation.navigate("codescreen", {
               code: barcode_result,
-              imageData: response
+              imageData: second_response,
+              isFromCamera: scanner_sound
             });
           })
           .catch(err => console.log(err));
@@ -378,11 +388,14 @@ const CameraScanner = ({ navigation, camera_position }) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  camera_position: state.usedSettings[0].camera
+  camera_position: state.usedSettings[0].camera,
+  scanner_sound: state.usedSettings[0].scannerSound,
+  scanner_vibration: state.usedSettings[0].scannerVibration
 });
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  null
 )(CameraScanner);
 
 const styles = StyleSheet.create({

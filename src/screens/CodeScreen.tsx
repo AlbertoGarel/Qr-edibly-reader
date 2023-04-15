@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useEffect } from "react";
 import { Animated, SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { AppState, History } from "../store/types";
@@ -13,7 +12,7 @@ import { useHeaderHeight } from "@react-navigation/elements";
 import {
   copyToClipboard,
   handler_linking_url, isURL, pullApartDateString,
-  shareMessage
+  shareMessage, simpleVibrated
 } from "../utils/utils";
 import { barcodelineal_icon_text_Header, drawerActions } from "../utils/actionsAndIcons";
 import uuid from "react-native-uuid";
@@ -21,15 +20,30 @@ import { addHistory } from "../store/history/actions";
 import { amazon_locale_URL } from "../utils/amazonURL";
 import i18n from "../translate";
 import * as Localization from "expo-localization";
+import { useSound } from "../hooks/useSound";
 
 const CodeScreen = ({ route }) => {
   const headerHeight = useHeaderHeight();
   const { dark, colors } = useTheme();
+  const playSound = useSound();
   const finderWidth: number = WINDOW_WIDTH - (WINDOW_WIDTH / 6);
   const finderHeight: number = WINDOW_HEIGHT / 2;
   const zoomAnim = React.useRef(new Animated.Value(0)).current;
   const create_id = uuid.v4();
   const date = pullApartDateString(new Date().toString());
+
+  async function scannerSound() {
+    try {
+      await playSound();
+    } catch (err) {
+      if (__DEV__) console.log("error en sonido de scanner");
+    }
+  }
+
+  React.useEffect(() => {
+    if (route.params.isFromCamera) scannerSound();
+    // ADD vibration mode for scanner
+  }, [route.params.isFromCamera]);
 
   const barcode_actions_icons: Barcode_action_icons = {
     web: {
@@ -157,7 +171,7 @@ const CodeScreen = ({ route }) => {
                                       }}
                                       redux_element={{
                                         ...redux_element,
-                                        content: {...redux_element.content , type: text_ico.contentType},
+                                        content: { ...redux_element.content, type: text_ico.contentType }
                                       }}
         />;
       default:
@@ -190,6 +204,7 @@ const CodeScreen = ({ route }) => {
 
 const mapStateToProps = (state: AppState) => ({
   users: state.userList
+
 });
 const mapDipatchToProps = (dispatch: Dispatch) => ({
   onAddHistory: (history: History) => {

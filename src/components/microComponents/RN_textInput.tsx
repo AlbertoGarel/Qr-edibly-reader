@@ -14,17 +14,17 @@ interface RN_textInputProps {
 const RN_textInput = ({ selectedSettings }: RN_textInputProps) => {
   const { dark, colors } = useTheme();
   const { buttonVibration, buttonSound } = selectedSettings[0];
-  const playSound = useSound();
+  const playSound: () => Promise<void> = useSound();
 
-  async function HandlerSoundButton() {
+  async function HandlerSoundButton(): Promise<Function | void> {
     return buttonSound ? await playSound() : () => null;
   }
 
-  async function handlerPress() {
+  async function handlerPress(): Promise<void> {
     await handlerActionAndEffects(() => null, buttonVibration, HandlerSoundButton);
   }
 
-  const [value, onChangeText] = React.useState(i18n.t("contextual.input_name_placeholder"));
+  const [value, onChangeText] = React.useState<string>(i18n.t("contextual.input_name_placeholder"));
   return (
     <View
       style={[styles.container, { backgroundColor: value, borderBottomColor: colors.border }]}>

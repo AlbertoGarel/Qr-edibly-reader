@@ -18,13 +18,13 @@ interface RNpickerProp {
 const RNpicker = ({ selectedSettings, dataPickers, icon, data, handler }: RNpickerProp) => {
   const { dark, colors } = useTheme();
   const { buttonVibration, buttonSound } = selectedSettings[0];
-  const playSound = useSound();
+  const playSound: () => Promise<void> = useSound();
 
-  async function HandlerSoundButton() {
+  async function HandlerSoundButton(): Promise<Function | void> {
     return buttonSound ? await playSound() : () => null;
   }
 
-  async function handlerPress() {
+  async function handlerPress(): Promise<void> {
     await handlerActionAndEffects(() => null, buttonVibration, HandlerSoundButton);
   }
 
