@@ -11,8 +11,10 @@ import LinealBarcodesElement from "../components/LinealBarcodesElement";
 import { useHeaderHeight } from "@react-navigation/elements";
 import {
   copyToClipboard,
-  handler_linking_url, isURL, pullApartDateString,
-  shareMessage, simpleVibrated
+  handler_linking_url,
+  isURL,
+  pullApartDateString,
+  shareMessage
 } from "../utils/utils";
 import { barcodelineal_icon_text_Header, drawerActions } from "../utils/actionsAndIcons";
 import uuid from "react-native-uuid";
@@ -23,13 +25,13 @@ import * as Localization from "expo-localization";
 import { useSound } from "../hooks/useSound";
 
 const CodeScreen = ({ route }) => {
-  const headerHeight = useHeaderHeight();
+  const headerHeight: number = useHeaderHeight();
   const { dark, colors } = useTheme();
-  const playSound = useSound();
+  const playSound: () => Promise<void> = useSound();
   const finderWidth: number = WINDOW_WIDTH - (WINDOW_WIDTH / 6);
   const finderHeight: number = WINDOW_HEIGHT / 2;
   const zoomAnim = React.useRef(new Animated.Value(0)).current;
-  const create_id = uuid.v4();
+  const create_id: string | number[] = uuid.v4();
   const date = pullApartDateString(new Date().toString());
 
   async function scannerSound() {
@@ -104,7 +106,7 @@ const CodeScreen = ({ route }) => {
     let drawer_ico: Barcode_action_icons = barcode_actions_icons;
 
     const redux_element: History = {
-      id: data.rawValue,
+      id: create_id,
       content: {
         type: data.content.type
       },

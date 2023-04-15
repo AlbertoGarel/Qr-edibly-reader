@@ -71,7 +71,7 @@ export type AppState = {
 // HISTORY TYPES
 export type HistoryInUseState = History[];
 export type History = {
-  id: string,
+  id: string | number[],
   content: {
     type: number
   },

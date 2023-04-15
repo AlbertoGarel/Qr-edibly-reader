@@ -122,7 +122,7 @@ const Settings = ({ onAddSettings, selectedSettings }: Props) => {
             title: "contextual.add_history",
             action: { history: !history },
             value: history,
-            predefValue: false
+            predefValue: true
           }
         ]
       }

@@ -24,6 +24,7 @@ type Props = {
   redux_element: History,
   onAddHistory: (redux_element: History) => void
   onDeleteFavourite: (id_element: string) => void
+  usedSattings: boolean
 }
 
 const LinealBarcodesElement = ({
@@ -32,7 +33,8 @@ const LinealBarcodesElement = ({
                                  onCHangeStateReduxFavourite,
                                  image,
                                  data,
-                                 redux_element
+                                 redux_element,
+                                 usedSattings
                                }: Props) => {
   const { dark, colors } = useTheme();
   const headerHeight = useHeaderHeight();
@@ -42,8 +44,8 @@ const LinealBarcodesElement = ({
   useEffect((): () => void => {
     let isMounted = true;
 
-    if (image && isMounted) {
-      // add history option conditional from options.
+    if (image && isMounted && usedSattings) {
+      // add history option conditional from setting options and exist image
       onAddHistory(redux_element);
     }
 
@@ -84,7 +86,8 @@ const LinealBarcodesElement = ({
 };
 
 const mapStateToProps = (state: AppState) => ({
-  history: state.usedHistory
+  history: state.usedHistory,
+  usedSattings: state.usedSettings[0].history
 });
 
 const mapDipatchToProps = (dispatch: Dispatch) => ({
