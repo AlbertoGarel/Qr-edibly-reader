@@ -23,7 +23,7 @@ type Props = {
   data: any,
   redux_element: History,
   onAddHistory: (redux_element: History) => void
-  onDeleteFavourite: (id_element: string) => void
+  onDeleteFavourite: (id_element: number[]) => void
   usedSattings: boolean
 }
 
@@ -94,7 +94,7 @@ const mapDipatchToProps = (dispatch: Dispatch) => ({
   onCHangeStateReduxFavourite: (favourite: History) => {
     dispatch(changeStateFavourite(favourite));
   },
-  onDeleteFavourite: (id: string) => {
+  onDeleteFavourite: (id: number[]) => {
     dispatch(deleteFavourite(id));
   },
   onAddHistory: (history: History) => {

@@ -9,7 +9,7 @@ export const addHistory = (history: object): { type: HISTORY_LIST_ACTION_TYPES.A
   type: HISTORY_LIST_ACTION_TYPES.ADD_HISTORY,
   historyData: { ...history }
 });
-export const deleteHistory = (id: string): { type: HISTORY_LIST_ACTION_TYPES.DELETE_HISTORY; id: string } => ({
+export const deleteHistory = (id: number[]): { type: HISTORY_LIST_ACTION_TYPES.DELETE_HISTORY; id: number[] } => ({
   type: HISTORY_LIST_ACTION_TYPES.DELETE_HISTORY,
   id: id
 });

@@ -16,19 +16,19 @@ export type AddSettingsAction = {
 }
 export type SettingsListActions = AddSettingsAction;
 // THEME TYPES
-export type ThemesInUseState = Theme[];
+export type ThemesInUseState = Theme[] ;
 export type Theme = {
   dark: boolean,
   image?: any,
   index?: number,
   name?: string,
   colors: {
-    background: string,
-    border: string,
-    card: string,
-    notification: string,
-    primary: string,
-    text: string,
+    background?: string,
+    border?: string,
+    card?: string,
+    notification?: string,
+    primary?: string,
+    text?: string,
   }
 };
 export type AddThemeAction = {
@@ -71,7 +71,7 @@ export type AppState = {
 // HISTORY TYPES
 export type HistoryInUseState = History[];
 export type History = {
-  id: string | number[],
+  id: number[],
   content: {
     type: number
   },
@@ -90,7 +90,7 @@ export type AddHistoryAction = {
 }
 export type DeleteHistoryAction = {
   type: string,
-  id: string | number[]
+  id: number[]
 }
 export type DeleteByDateHistory = {
   type: string,
@@ -108,7 +108,7 @@ export type ChangeValueFavouriteAction = {
 }
 export type DeleteValueFavouriteAction = {
   type: string,
-  favouriteID: string
+  favouriteID: number[]
 }
 export type DeleteByDateFavoriteAction = {
   type: string

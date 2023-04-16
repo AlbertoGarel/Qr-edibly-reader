@@ -28,11 +28,11 @@ interface ImageProps {
 
 type Props = {
   image: any,
-  element_id: string,
+  element_id: number[],
   favourite: object[],
   bookmark: boolean,
   setBookmark: (state: boolean) => void
-  redux_bookmark_update: (state: boolean, id: string) => void,
+  redux_bookmark_update: (state: boolean, id: number[]) => void,
   format_code: number
 }
 

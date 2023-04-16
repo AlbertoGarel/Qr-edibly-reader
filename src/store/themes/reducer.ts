@@ -1,13 +1,13 @@
-import { AddThemeAction, ThemeListActions } from "../types";
+import { AddThemeAction, ThemeListActions, ThemesInUseState } from "../types";
 import { THEMES_LIST_ACTION_TYPES } from "./actions";
 import { custom_themes, Themes } from "../../themes/themes";
 
 const initialTheme = custom_themes.filter(i => i.name === "sky_theme");
 
-export const initialState: Themes[] = initialTheme;
+export const initialState: ThemesInUseState = initialTheme;
 
 export const usedTheme = (
-  state: Themes[] = initialState,
+  state: ThemesInUseState = initialState,
   action: ThemeListActions
 ) => {
   switch (action.type) {
