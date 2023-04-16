@@ -72,6 +72,7 @@ const CameraScanner = ({ navigation, camera_position, scanner_sound, scanner_vib
     if (isFocused) {
       getColor(colors.text);
       setNorecognized(false);
+      setTorchEnable('off')
     }
 
     return () => is_Mounted = false;
