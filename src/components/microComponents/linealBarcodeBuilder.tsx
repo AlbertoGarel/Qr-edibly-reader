@@ -69,6 +69,7 @@ const BarcodeView = ({ value, format, layoutData }: Props) => {
     case format.includes("CODE39"):
     case format.includes("ITF"):
       return (
+        //@ts-ignore flat Property
         <Barcode flat value={value} format={format} text={value}
                  onError={(err) => console.log("error en dibujo code", err)} />
       );
