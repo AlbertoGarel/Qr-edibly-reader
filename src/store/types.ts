@@ -71,7 +71,7 @@ export type AppState = {
 // HISTORY TYPES
 export type HistoryInUseState = History[];
 export type History = {
-  id: number[],
+  id: string | number[],
   content: {
     type: number
   },
@@ -90,7 +90,7 @@ export type AddHistoryAction = {
 }
 export type DeleteHistoryAction = {
   type: string,
-  id: number[]
+  id: string | number[]
 }
 export type DeleteByDateHistory = {
   type: string,
@@ -108,7 +108,7 @@ export type ChangeValueFavouriteAction = {
 }
 export type DeleteValueFavouriteAction = {
   type: string,
-  favouriteID: number[]
+  favouriteID: string | number[]
 }
 export type DeleteByDateFavoriteAction = {
   type: string

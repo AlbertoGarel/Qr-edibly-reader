@@ -47,7 +47,7 @@ const BarcodeView = ({ value, format, layoutData }: Props) => {
     case format.includes("ISBN"):
     case format.includes("EAN13"):
     case format.includes("UPC"):
-    case format.includes("ITF"):
+    case format.includes("ITF14"):
       return (
         <>
           <BarcodeCreatorViewManager
@@ -67,6 +67,7 @@ const BarcodeView = ({ value, format, layoutData }: Props) => {
       );
     case format.includes("EAN"):
     case format.includes("CODE39"):
+    case format.includes("ITF"):
       return (
         <Barcode flat value={value} format={format} text={value}
                  onError={(err) => console.log("error en dibujo code", err)} />

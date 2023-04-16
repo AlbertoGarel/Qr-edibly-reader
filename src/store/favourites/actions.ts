@@ -13,7 +13,7 @@ export const changeStateFavourite = (favourite: object): { type: FAVOURITE_LIST_
   favouriteData: favourite
 });
 
-export const deleteFavourite = (id: number[]): { type: FAVOURITE_LIST_ACTION_TYPES.DELETE_FAVOURITE; favouriteID: number[] } => ({
+export const deleteFavourite = (id: string | number[]): { type: FAVOURITE_LIST_ACTION_TYPES.DELETE_FAVOURITE; favouriteID: string | number[] } => ({
   type: FAVOURITE_LIST_ACTION_TYPES.DELETE_FAVOURITE,
   favouriteID: id
 });

@@ -28,12 +28,13 @@ interface ImageProps {
 
 type Props = {
   image: any,
-  element_id: number[],
+  element_id: string | number[],
   favourite: object[],
   bookmark: boolean,
   setBookmark: (state: boolean) => void
-  redux_bookmark_update: (state: boolean, id: number[]) => void,
-  format_code: number
+  redux_bookmark_update: (state: boolean, id: string | number[]) => void,
+  format_code: number,
+  raw_value: string
 }
 
 const AnimationImage = ({
@@ -43,7 +44,8 @@ const AnimationImage = ({
                           bookmark,
                           setBookmark,
                           redux_bookmark_update,
-                          format_code
+                          format_code,
+                          raw_value
                         }: Props) => {
   const { dark, colors } = useTheme();
   const viewShootRef: React.MutableRefObject<any> = React.useRef(null);
@@ -203,7 +205,7 @@ const AnimationImage = ({
                         options={{ format: "jpg", quality: 0.9 }}
                         onCapture={onCapture}
               >
-                <BarcodeBuilder value={element_id} format={format_code} layoutData={layoutData} />
+                <BarcodeBuilder value={raw_value} format={format_code} layoutData={layoutData} />
               </ViewShot>
             </Animated.View>
             <Image source={require("../assets/images/lupa_plus_light.png")} style={styles.iconResize} />

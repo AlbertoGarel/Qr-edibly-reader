@@ -70,6 +70,7 @@ const LinealBarcodesElement = ({
                       setBookmark={setBookmark}
                       redux_bookmark_update={redux_bookmark_update}
                       format_code={data.code[0].format}
+                      raw_value={data.code[0].rawValue}
       />
       <View style={{
         backgroundColor: colors.background,
