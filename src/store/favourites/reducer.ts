@@ -2,9 +2,10 @@ import {
   ChangeValueFavouriteAction, DeleteByDateFavoriteAction,
   DeleteValueFavouriteAction,
   FavouriteListActions,
-  FavouritesInUseState
+  FavouritesInUseState, UpdateItemNameFavourite, UpdateItemNameHistory
 } from "../../store/types";
 import { FAVOURITE_LIST_ACTION_TYPES } from "../../store/favourites/actions";
+import { HISTORY_LIST_ACTION_TYPES } from "../../store/history/actions";
 
 
 export const initialState: FavouritesInUseState | [] = [];
@@ -30,6 +31,19 @@ export const usedFauvorites = (
       const delete_date_payload = <DeleteByDateFavoriteAction>action;
       const date_to_delete = delete_date_payload.date;
       return newState.filter(i => i.date !== date_to_delete);
+    case HISTORY_LIST_ACTION_TYPES.UPDATE_ITEM:
+      const update_item_payload = <UpdateItemNameFavourite>action;
+      const item_to_update = update_item_payload.params;
+      return newState.map(item => {
+        if (item.id === item_to_update.id) {
+          return {
+            ...item,
+            ...item_to_update
+          };
+        } else {
+          return item;
+        }
+      });
     default:
       return state;
   }

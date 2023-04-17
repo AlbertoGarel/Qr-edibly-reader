@@ -18,13 +18,15 @@ import {
 } from "../utils/utils";
 import { barcodelineal_icon_text_Header, drawerActions } from "../utils/actionsAndIcons";
 import uuid from "react-native-uuid";
-import { addHistory } from "../store/history/actions";
+import { addHistory, updateCustomNameHistory } from "../store/history/actions";
 import { amazon_locale_URL } from "../utils/amazonURL";
 import i18n from "../translate";
 import * as Localization from "expo-localization";
 import { useSound } from "../hooks/useSound";
+import { useEffect } from "react";
+import { updateCustomNameFavourite } from "../store/favourites/actions";
 
-const CodeScreen = ({ route }) => {
+const CodeScreen = ({ route, onUpadteItemHistory, onUpdateItemFavourite }) => {
   const headerHeight: number = useHeaderHeight();
   const { dark, colors } = useTheme();
   const playSound: () => Promise<void> = useSound();
@@ -33,6 +35,27 @@ const CodeScreen = ({ route }) => {
   const zoomAnim = React.useRef(new Animated.Value(0)).current;
   const create_id: string | number[] = uuid.v4();
   const date = pullApartDateString(new Date().toString());
+
+  const customName: string = i18n.t("contextual.input_name_placeholder");
+  const initialStateCustomValueInput: string = route.params.code[0].name === customName ? customName : route.params.code[0].name;
+  const [customTitle, getCustomTitle] = React.useState<string>(initialStateCustomValueInput);
+
+  useEffect((): () => void => {
+    let isMounted = true;
+    // UPDATE CUSTOM NAME OF ITEM.
+    //From History or Favourite List
+    if (!route.params.imageData && customTitle !== initialStateCustomValueInput) {
+      onUpadteItemHistory(route.params.code[0].id, customTitle);
+      onUpdateItemFavourite(route.params.code[0].id, customTitle);
+    }
+    // From Camera
+    if (route.params.imageData && customTitle !== initialStateCustomValueInput) {
+      onUpadteItemHistory(create_id, customTitle);
+      onUpdateItemFavourite(create_id, customTitle);
+    }
+
+    return () => isMounted = false;
+  }, [customTitle]);
 
   async function scannerSound() {
     try {
@@ -143,6 +166,8 @@ const CodeScreen = ({ route }) => {
                                         drawicons: [drawer_ico.web, drawer_ico.share, drawer_ico.copy]
                                       }}
                                       redux_element={redux_element}
+                                      customTitle={customTitle}
+                                      getCustomTitle={getCustomTitle}
         />;
       case "PDF417" || 2048:
         console.log("PDF417");
@@ -175,6 +200,8 @@ const CodeScreen = ({ route }) => {
                                         ...redux_element,
                                         content: { ...redux_element.content, type: text_ico.contentType }
                                       }}
+                                      customTitle={customTitle}
+                                      getCustomTitle={getCustomTitle}
         />;
       default:
         //CREATE USER INFO COMPONENT
@@ -211,6 +238,12 @@ const mapStateToProps = (state: AppState) => ({
 const mapDipatchToProps = (dispatch: Dispatch) => ({
   onAddHistory: (history: History) => {
     dispatch(addHistory(history));
+  },
+  onUpadteItemHistory: (id: number[], name: string) => {
+    dispatch(updateCustomNameHistory(id, name));
+  },
+  onUpdateItemFavourite: (id: number[], name: string) => {
+    dispatch(updateCustomNameFavourite(id, name));
   }
   // other callbacks go here...
 });

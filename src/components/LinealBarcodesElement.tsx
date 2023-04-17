@@ -24,7 +24,9 @@ type Props = {
   redux_element: History,
   onAddHistory: (redux_element: History) => void
   onDeleteFavourite: (id_element: number[]) => void
-  usedSattings: boolean
+  usedSattings: boolean,
+  customTitle: string
+  getCustomTitle: any
 }
 
 const LinealBarcodesElement = ({
@@ -34,7 +36,9 @@ const LinealBarcodesElement = ({
                                  image,
                                  data,
                                  redux_element,
-                                 usedSattings
+                                 usedSattings,
+                                 customTitle,
+                                 getCustomTitle
                                }: Props) => {
   const { dark, colors } = useTheme();
   const headerHeight = useHeaderHeight();
@@ -78,8 +82,13 @@ const LinealBarcodesElement = ({
         flex: 1,
         borderTopRightRadius: 70
       }}>
-        <DrawerIconsItem handler={handler_linking_url} data={data.code[0].rawValue}
-                         drawicons={data.drawicons} />
+        <DrawerIconsItem handler={handler_linking_url}
+                         data={data.code[0].rawValue}
+                         drawicons={data.drawicons}
+                         customTitle={customTitle}
+                         getCustomTitle={getCustomTitle}
+
+        />
         <ContentItem content={data.code[0].rawValue} />
       </View>
     </View>

@@ -156,7 +156,7 @@ export const response_object: { content: {}, displayValue: string, format: numbe
  *
  * */
 const error_message = (item: string): void => {
-  return Alert.alert(`${i18n.t("contextual.ErrorSendMessage")} ${item}`);
+  Alert.alert(`${i18n.t("contextual.ErrorSendMessage")} ${item}`);
 };
 
 /**

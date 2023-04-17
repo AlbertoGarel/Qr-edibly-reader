@@ -24,9 +24,11 @@ type Props = {
   handler: (url: string) => void,
   data: string,
   drawicons: Content_elements_actions[]
+  customTitle: string
+  getCustomTitle: any
 }
 
-const DrawerIconsItem = ({ handler, data, drawicons }: Props) => {
+const DrawerIconsItem = ({ handler, data, drawicons, customTitle, getCustomTitle }: Props) => {
   const { dark, colors } = useTheme();
   const numItemsRow = WINDOW_WIDTH / (((square_face_big / 7) + (iconMargin * 2)) * drawicons.length);
   const numicons = WINDOW_WIDTH > numItemsRow;
@@ -83,7 +85,10 @@ const DrawerIconsItem = ({ handler, data, drawicons }: Props) => {
     <View style={{ ...styles.drawercontainer, height: containerHeigt }}>
       <View style={styles.container}>
         <View style={styles.inputContainer}>
-          <RN_textInput />
+          <RN_textInput
+            customTitle={customTitle}
+            getCustomTitle={getCustomTitle}
+          />
           <Image source={dark
             ? require("../assets/images/pencil_light.png")
             : require("../assets/images/pencil_dark.png")
