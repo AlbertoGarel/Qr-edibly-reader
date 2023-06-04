@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@App/*": [
+        "src/*"
+      ],
+      "lib/*": [
+        "common/*"
+      ]
+    }
+  },
+  "extends": "expo/tsconfig.base",
+  "typeRoots": [
+    "./src/types"
+  ]
+}
